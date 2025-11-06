@@ -1,0 +1,625 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E1E784112EBC9200004CC569 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = E1E784102EBC9200004CC569 /* Data */; };
+		E1E784132EBC9203004CC569 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = E1E784122EBC9203004CC569 /* Domain */; };
+		E1E784152EBC98E6004CC569 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = E1E784142EBC98E6004CC569 /* DesignSystem */; };
+		E1E784172EBC98F4004CC569 /* ApplicationDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E1E784162EBC98F4004CC569 /* ApplicationDependencies */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E16191382EBC89500053264B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E161911D2EBC894F0053264B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E16191242EBC894F0053264B;
+			remoteInfo = Izzirium;
+		};
+		E16191422EBC89500053264B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E161911D2EBC894F0053264B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E16191242EBC894F0053264B;
+			remoteInfo = Izzirium;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E16191252EBC894F0053264B /* Izzirium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Izzirium.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E16191372EBC89500053264B /* IzziriumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IzziriumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E16191412EBC89500053264B /* IzziriumUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IzziriumUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E161936B2EBC89D70053264B /* ExternalDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ExternalDependencies; sourceTree = "<group>"; };
+		E1E781B82EBC8C84004CC569 /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Data; sourceTree = "<group>"; };
+		E1E781B92EBC8C84004CC569 /* Domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Domain; sourceTree = "<group>"; };
+		E1E7840E2EBC91C9004CC569 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DesignSystem; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		E16191272EBC894F0053264B /* Izzirium */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Izzirium;
+			sourceTree = "<group>";
+		};
+		E161913A2EBC89500053264B /* IzziriumTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = IzziriumTests;
+			sourceTree = "<group>";
+		};
+		E16191442EBC89500053264B /* IzziriumUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = IzziriumUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E16191222EBC894F0053264B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1E784152EBC98E6004CC569 /* DesignSystem in Frameworks */,
+				E1E784132EBC9203004CC569 /* Domain in Frameworks */,
+				E1E784172EBC98F4004CC569 /* ApplicationDependencies in Frameworks */,
+				E1E784112EBC9200004CC569 /* Data in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E16191342EBC89500053264B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E161913E2EBC89500053264B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E161911C2EBC894F0053264B = {
+			isa = PBXGroup;
+			children = (
+				E1E7840E2EBC91C9004CC569 /* DesignSystem */,
+				E1E781B82EBC8C84004CC569 /* Data */,
+				E1E781B92EBC8C84004CC569 /* Domain */,
+				E161936B2EBC89D70053264B /* ExternalDependencies */,
+				E16191272EBC894F0053264B /* Izzirium */,
+				E161913A2EBC89500053264B /* IzziriumTests */,
+				E16191442EBC89500053264B /* IzziriumUITests */,
+				E1E7840F2EBC9200004CC569 /* Frameworks */,
+				E16191262EBC894F0053264B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E16191262EBC894F0053264B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E16191252EBC894F0053264B /* Izzirium.app */,
+				E16191372EBC89500053264B /* IzziriumTests.xctest */,
+				E16191412EBC89500053264B /* IzziriumUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E1E7840F2EBC9200004CC569 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E16191242EBC894F0053264B /* Izzirium */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E161914B2EBC89500053264B /* Build configuration list for PBXNativeTarget "Izzirium" */;
+			buildPhases = (
+				E16191212EBC894F0053264B /* Sources */,
+				E16191222EBC894F0053264B /* Frameworks */,
+				E16191232EBC894F0053264B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E16191272EBC894F0053264B /* Izzirium */,
+			);
+			name = Izzirium;
+			packageProductDependencies = (
+				E1E784102EBC9200004CC569 /* Data */,
+				E1E784122EBC9203004CC569 /* Domain */,
+				E1E784142EBC98E6004CC569 /* DesignSystem */,
+				E1E784162EBC98F4004CC569 /* ApplicationDependencies */,
+			);
+			productName = Izzirium;
+			productReference = E16191252EBC894F0053264B /* Izzirium.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E16191362EBC89500053264B /* IzziriumTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E161914E2EBC89500053264B /* Build configuration list for PBXNativeTarget "IzziriumTests" */;
+			buildPhases = (
+				E16191332EBC89500053264B /* Sources */,
+				E16191342EBC89500053264B /* Frameworks */,
+				E16191352EBC89500053264B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E16191392EBC89500053264B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E161913A2EBC89500053264B /* IzziriumTests */,
+			);
+			name = IzziriumTests;
+			packageProductDependencies = (
+			);
+			productName = IzziriumTests;
+			productReference = E16191372EBC89500053264B /* IzziriumTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E16191402EBC89500053264B /* IzziriumUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E16191512EBC89500053264B /* Build configuration list for PBXNativeTarget "IzziriumUITests" */;
+			buildPhases = (
+				E161913D2EBC89500053264B /* Sources */,
+				E161913E2EBC89500053264B /* Frameworks */,
+				E161913F2EBC89500053264B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E16191432EBC89500053264B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E16191442EBC89500053264B /* IzziriumUITests */,
+			);
+			name = IzziriumUITests;
+			packageProductDependencies = (
+			);
+			productName = IzziriumUITests;
+			productReference = E16191412EBC89500053264B /* IzziriumUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E161911D2EBC894F0053264B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					E16191242EBC894F0053264B = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					E16191362EBC89500053264B = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = E16191242EBC894F0053264B;
+					};
+					E16191402EBC89500053264B = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = E16191242EBC894F0053264B;
+					};
+				};
+			};
+			buildConfigurationList = E16191202EBC894F0053264B /* Build configuration list for PBXProject "Izzirium" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E161911C2EBC894F0053264B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E16191262EBC894F0053264B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E16191242EBC894F0053264B /* Izzirium */,
+				E16191362EBC89500053264B /* IzziriumTests */,
+				E16191402EBC89500053264B /* IzziriumUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E16191232EBC894F0053264B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E16191352EBC89500053264B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E161913F2EBC89500053264B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E16191212EBC894F0053264B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E16191332EBC89500053264B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E161913D2EBC89500053264B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E16191392EBC89500053264B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E16191242EBC894F0053264B /* Izzirium */;
+			targetProxy = E16191382EBC89500053264B /* PBXContainerItemProxy */;
+		};
+		E16191432EBC89500053264B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E16191242EBC894F0053264B /* Izzirium */;
+			targetProxy = E16191422EBC89500053264B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E16191492EBC89500053264B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E161914A2EBC89500053264B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E161914C2EBC89500053264B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Izzirium/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = NTG62WV74G;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = loris.perret.izima.Izzirium;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		E161914D2EBC89500053264B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Izzirium/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = NTG62WV74G;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = loris.perret.izima.Izzirium;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		E161914F2EBC89500053264B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NTG62WV74G;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = loris.perret.izima.IzziriumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Izzirium.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Izzirium";
+			};
+			name = Debug;
+		};
+		E16191502EBC89500053264B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NTG62WV74G;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = loris.perret.izima.IzziriumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Izzirium.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Izzirium";
+			};
+			name = Release;
+		};
+		E16191522EBC89500053264B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NTG62WV74G;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = loris.perret.izima.IzziriumUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Izzirium;
+			};
+			name = Debug;
+		};
+		E16191532EBC89500053264B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NTG62WV74G;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = loris.perret.izima.IzziriumUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Izzirium;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E16191202EBC894F0053264B /* Build configuration list for PBXProject "Izzirium" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E16191492EBC89500053264B /* Debug */,
+				E161914A2EBC89500053264B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E161914B2EBC89500053264B /* Build configuration list for PBXNativeTarget "Izzirium" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E161914C2EBC89500053264B /* Debug */,
+				E161914D2EBC89500053264B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E161914E2EBC89500053264B /* Build configuration list for PBXNativeTarget "IzziriumTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E161914F2EBC89500053264B /* Debug */,
+				E16191502EBC89500053264B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E16191512EBC89500053264B /* Build configuration list for PBXNativeTarget "IzziriumUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E16191522EBC89500053264B /* Debug */,
+				E16191532EBC89500053264B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E1E784102EBC9200004CC569 /* Data */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Data;
+		};
+		E1E784122EBC9203004CC569 /* Domain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Domain;
+		};
+		E1E784142EBC98E6004CC569 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		E1E784162EBC98F4004CC569 /* ApplicationDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ApplicationDependencies;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = E161911D2EBC894F0053264B /* Project object */;
+}
