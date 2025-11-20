@@ -1,6 +1,6 @@
 //
 //  RootCoordinatorView.swift
-//  I zzirium
+//  Izzirium
 //
 //  Created by Loris Perret on 06/11/2025.
 //
@@ -23,10 +23,7 @@ struct RootCoordinatorView<ViewModel>: View where ViewModel: RootCoordinatorView
         Group {
             switch viewModel.loginState {
             case .loading:
-                EmptyView()
-                    .task {
-                        await viewModel.onAppear()
-                    }
+                ProgressView()
 
             case .loaded(let state):
                 contentView(state)
@@ -35,6 +32,9 @@ struct RootCoordinatorView<ViewModel>: View where ViewModel: RootCoordinatorView
             case .failed:
                 EmptyView()
             }
+        }
+        .task {
+            await viewModel.fetchLoginState()
         }
     }
 
@@ -59,7 +59,7 @@ struct RootCoordinatorView<ViewModel>: View where ViewModel: RootCoordinatorView
 //            case .failed(let error):
 //                ZZText(error.localizedDescription)
 //            case .loaded:
-                EmptyView()
+            AquariumListView(viewModel: AquariumListViewModel())
 //            }
         case .unlogged:
             EmptyView()

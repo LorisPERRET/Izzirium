@@ -1,6 +1,6 @@
 //
 //  FakeRootCoordinatorViewModel.swift
-//  I zzirium
+//  Izzirium
 //
 //  Created by Loris Perret on 06/11/2025.
 //
@@ -26,7 +26,7 @@ final class FakeRootCoordinatorViewModel: RootCoordinatorViewModelProtocol {
 
     // MARK: - RootCoordinatorViewModelProtocol
 
-    func onAppear() {}
+    func fetchLoginState() {}
 }
 
 #endif

@@ -1,5 +1,5 @@
 //
-//  View+navigationBarDismissButton.swift
+//  View+zzNavigationBarBackButton.swift
 //  GrandTour
 //
 //  Created by Benjamin Lambert on 02/07/2025.
@@ -44,7 +44,7 @@ struct ZZBackButtonModifier: ViewModifier {
         content
             .navigationBarBackButtonHidden(true)
             .toolbar {
-                if isPresented && isVisible {
+                if isVisible {
                     backToolbarItem
                 }
             }
@@ -53,7 +53,7 @@ struct ZZBackButtonModifier: ViewModifier {
 
 extension View {
 
-    public func navigationBarDismissButton(isVisible: Bool = true) -> some View {
+    public func zzNavigationBarBackButton(isVisible: Bool = true) -> some View {
         self.modifier(ZZBackButtonModifier(isVisible: isVisible))
     }
 }

@@ -19,6 +19,11 @@ private struct ZZNavigationTitleModifier: ViewModifier {
         self.title = title
 
         let appearance = UINavigationBarAppearance()
+        
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .clear
+        appearance.shadowColor = .clear
+        
         let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [
             .font: FontStyle.h4.uiFont
         ]

@@ -1,13 +1,13 @@
 //
-//  I zziriumUITestsLaunchTests.swift
-//  I zziriumUITests
+//  IzziriumUITestsLaunchTests.swift
+//  IzziriumUITests
 //
 //  Created by Loris Perret on 06/11/2025.
 //
 
 import XCTest
 
-final class I zziriumUITestsLaunchTests: XCTestCase {
+final class IzziriumUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

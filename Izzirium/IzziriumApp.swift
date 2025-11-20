@@ -1,32 +1,37 @@
 //
-//  I zziriumApp.swift
-//  I zzirium
+//  IzziriumApp.swift
+//  Izzirium
 //
 //  Created by Loris Perret on 06/11/2025.
 //
 
+import DesignSystem
+//import KastorBoard
+import SKToast
 import SwiftUI
 import SwiftData
 
 @main
 struct IzziriumApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SKToastWindowContainer {
+//                KastorWindowContainer(
+//                    isKastorEnabled: KastorConstants.isKastorEnabled,
+//                    theme: KastorBoardTheme(
+//                        primary: Color.primaryMedium,
+//                        surface: Color.lightHightest,
+//                        surfaceLow: Color.neutralLower,
+//                        onSurface: Color.darkHightest,
+//                        onSurfaceVariantLow: Color.neutralMedium,
+//                        onSurfaceVariantHigh: Color.neutralLow
+//                    ),
+//                    defaultBoard: .logs
+//                ) {
+                    RootCoordinatorView(viewModel: RootCoordinatorViewModel())
+//                }
+            }
         }
-        .modelContainer(sharedModelContainer)
     }
 }

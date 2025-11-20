@@ -1,6 +1,6 @@
 //
 //  LoginState.swift
-//  I zzirium
+//  Izzirium
 //
 //  Created by Loris Perret on 06/11/2025.
 //

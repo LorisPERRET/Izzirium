@@ -1,6 +1,6 @@
 //
 //  RootCoordinatorViewModel.swift
-//  I zzirium
+//  Izzirium
 //
 //  Created by Loris Perret on 06/11/2025.
 //
@@ -19,7 +19,7 @@ protocol RootCoordinatorViewModelProtocol: ObservableObject {
     
     var loginState: SKLoadingState<LoginState> { get }
 
-    func onAppear() async
+    func fetchLoginState() async
 }
 
 final class RootCoordinatorViewModel: RootCoordinatorViewModelProtocol {
@@ -32,7 +32,9 @@ final class RootCoordinatorViewModel: RootCoordinatorViewModelProtocol {
 
     // MARK: - RootCoordinatorViewModelProtocol
 
-    func onAppear() async {
+    func fetchLoginState() async {
+//        logger.log("fetchLoginState")
+        
         loginState = .loaded(.logged)
     }
 }

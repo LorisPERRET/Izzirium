@@ -1,13 +1,13 @@
 //
-//  I zziriumUITests.swift
-//  I zziriumUITests
+//  IzziriumUITests.swift
+//  IzziriumUITests
 //
 //  Created by Loris Perret on 06/11/2025.
 //
 
 import XCTest
 
-final class I zziriumUITests: XCTestCase {
+final class IzziriumUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

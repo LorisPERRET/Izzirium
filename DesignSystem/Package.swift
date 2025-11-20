@@ -26,6 +26,9 @@ let package = Package(
                     name: "DesignSystemDependencies",
                     package: "ExternalDependencies"
                 )
+            ],
+            resources: [
+                .process("Core/Foundation/Typographies/Fonts")
             ]
         )
     ]
