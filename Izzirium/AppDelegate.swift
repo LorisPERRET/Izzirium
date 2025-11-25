@@ -8,7 +8,7 @@
 import Data
 import DesignSystem
 import Domain
-//import Kastor
+import Kastor
 import SKDependencyInjection
 import SwiftUI
 import UIKit
@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Properties
 
     // Logger
-//    private let logger = Logger(category: AppDelegate.self)
+    private let logger = Logger(category: AppDelegate.self)
 
     // MARK: - UIApplicationDelegate
 
@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         setupKastor()
         
-//        logger.info("App Finish Launching")
+        logger.info("App Finish Launching")
 
         return true
     }
@@ -67,8 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Sets up the Kastor framework with the specified configuration.
     private func setupKastor() {
         // Configure the Kastor framework with the provided settings
-//        KastorManager.setup(
-//            configuration: KastorConstants.kastorConfiguration
-//        )
+        KastorManager.setup(
+            configuration: KastorConstants.kastorConfiguration
+        )
     }
 }

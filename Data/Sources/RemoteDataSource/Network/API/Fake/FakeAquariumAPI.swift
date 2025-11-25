@@ -1,0 +1,28 @@
+//
+//  FakeAquariumAPI.swift
+//  Data
+//
+//  Created by Loris Perret on 24/11/2025.
+//
+
+import Foundation
+
+#if API_MOCK
+
+import Foundation
+import PapyrusAlamofire
+
+final class FakeAquariumAPI: AquariumAPI {
+
+    // MARK: - Properties
+
+    let sleepTime: UInt64 = 2_000_000_000
+
+    // MARK: - AquariumAPI
+    
+    func getAquariums() async throws -> AquariumResponseDTO {
+        AquariumResponseDTO(aquariums: AquariumDTO.Fake.list)
+    }
+}
+
+#endif

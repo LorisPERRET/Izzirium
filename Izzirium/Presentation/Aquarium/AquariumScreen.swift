@@ -12,7 +12,7 @@ enum AquariumScreen: ZZScreenProtocol {
 
     case detail(AquariumUI)
     case list
-    case sensor(String, [SensorView.ChartValue])
+    case sensor(LogType, [ChartValue])
 
     // MARK: ScreenProtocol
 
@@ -24,8 +24,8 @@ enum AquariumScreen: ZZScreenProtocol {
         case .list:
             "list"
             
-        case .sensor(let title, _):
-            "sensor_\(title)"
+        case .sensor(let type, _):
+            "sensor_\(type.title)"
         }
     }
 
@@ -38,8 +38,8 @@ enum AquariumScreen: ZZScreenProtocol {
         case .list:
             AquariumListView(viewModel: AquariumListViewModel())
             
-        case .sensor(let title, let values):
-            SensorView(title: title, values: values)
+        case .sensor(let type, let values):
+            SensorView(type: type, values: values)
         }
     }
 

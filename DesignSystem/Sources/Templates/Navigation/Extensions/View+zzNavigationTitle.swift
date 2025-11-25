@@ -41,7 +41,7 @@ private struct ZZNavigationTitleModifier: ViewModifier {
     // MARK: ViewModifier
 
     func body(content: Content) -> some View {
-        content.navigationBarTitle(title)
+        content.navigationTitle(title)
     }
 }
 

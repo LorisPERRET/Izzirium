@@ -14,18 +14,32 @@ final class FakeAquariumViewModel: AquariumViewModelProtocol {
 
     // MARK: - Properties
     
-    private(set) var aquarium: AquariumUI = AquariumUI.Fake.preview
+    private(set) var aquarium: AquariumUI
+    private(set) var dataState: SKLoadingState<[AquariumUI.LogUI]>
     
     // MARK: - Init
+    
+    init(withState dataState: SKLoadingState<[AquariumUI.LogUI]>, aquarium: AquariumUI) {
+        self.dataState = dataState
+        self.aquarium = aquarium
+    }
 
     // MARK: - AquariumViewModelProtocol
     
-    func getMesures(for type: AquariumViewModel.LogType) -> [SensorView.ChartValue] {
-        [
-            SensorView.ChartValue(date: Date(), value: 0),
-            SensorView.ChartValue(date: Date().addingTimeInterval(100), value: 1),
-            SensorView.ChartValue(date: Date().addingTimeInterval(300), value: 2)
-        ]
+    func getLogs() async {}
+    func getValues(for type: LogType, logs: [AquariumUI.LogUI]) -> [ChartValue] {
+        let values: [ChartValue]
+        switch type {
+        case .ph:
+            values = logs.map { ChartValue(date: $0.date, value: $0.ph) }
+        case .tds:
+            values = logs.map { ChartValue(date: $0.date, value: $0.tds) }
+        case .turbidity:
+            values = logs.map { ChartValue(date: $0.date, value: $0.turbidity) }
+        case .temperature:
+            values = logs.map { ChartValue(date: $0.date, value: $0.temperature) }
+        }
+        return values
     }
 }
 

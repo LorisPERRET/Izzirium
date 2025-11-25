@@ -60,6 +60,7 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
                 .padding(.mu100)
             }
             .zzNavigationTitle(title: "Mes Aquariums")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }

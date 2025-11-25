@@ -12,20 +12,11 @@ import SwiftUI
 
 struct SensorView: View {
     
-    struct ChartValue: Identifiable {
-        
-        // MARK: - Properties
-
-        let id = UUID()
-        let date: Date
-        let value: Float
-    }
-    
     // MARK: - Properties
 
-    let title: String
+    let type: LogType
     let values: [ChartValue]
-    
+        
     // MARK: - Body
 
     var body: some View {
@@ -39,7 +30,7 @@ struct SensorView: View {
             )
             .zzShadow(.medium)
         }
-        .zzNavigationTitle(title: title)
+        .zzNavigationTitle(title: type.title)
         .navigationBarTitleDisplayMode(.large)
         .padding(.mu100)
     }
@@ -60,11 +51,11 @@ struct SensorView: View {
 }
 
 private extension View {
-    func xConfig(_ values: [SensorView.ChartValue]) -> some View {
+    func xConfig(_ values: [ChartValue]) -> some View {
         self
             .chartXAxis {
                 AxisMarks(values: values.map { $0.date }) { value in
-                    if let date = value.as(Date.self) {
+                    if value.as(Date.self) != nil {
                         AxisValueLabel(
                             format:
                                 .dateTime
@@ -87,7 +78,7 @@ private extension View {
             }())
     }
 
-    func yConfig(_ values: [SensorView.ChartValue]) -> some View {
+    func yConfig(_ values: [ChartValue]) -> some View {
         self
             .chartYAxis {
                 AxisMarks(values: values.map { $0.value }) { value in
@@ -114,11 +105,11 @@ private extension View {
 
 #Preview {
     SensorView(
-        title: "PH",
+        type: .ph,
         values: [
-            SensorView.ChartValue(date: Date(), value: 0),
-            SensorView.ChartValue(date: Date().addingTimeInterval(100), value: 1),
-            SensorView.ChartValue(date: Date().addingTimeInterval(300), value: 2)
+            ChartValue(date: Date(), value: 0),
+            ChartValue(date: Date().addingTimeInterval(100), value: 1),
+            ChartValue(date: Date().addingTimeInterval(300), value: 2)
         ]
     )
 }

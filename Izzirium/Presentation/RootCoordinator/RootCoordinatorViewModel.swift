@@ -9,7 +9,7 @@ import Combine
 import Data
 //import Domain
 import Foundation
-//import Kastor
+import Kastor
 import SKDependencyInjection
 import SKLocalStorage
 import SKState
@@ -28,12 +28,12 @@ final class RootCoordinatorViewModel: RootCoordinatorViewModelProtocol {
 
     @Published private(set) var loginState: SKLoadingState<LoginState> = .loading
 
-//    private let logger = Logger(category: RootCoordinatorViewModel.self)
+    private let logger = Logger(category: RootCoordinatorViewModel.self)
 
     // MARK: - RootCoordinatorViewModelProtocol
 
     func fetchLoginState() async {
-//        logger.log("fetchLoginState")
+        logger.info("fetchLoginState")
         
         loginState = .loaded(.logged)
     }

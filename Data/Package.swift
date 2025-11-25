@@ -3,7 +3,7 @@
 
 import PackageDescription
 
-let useApiMock = false
+let useApiMock = true
 
 // swiftlint:disable:next prefixed_toplevel_constant
 let package = Package(
@@ -29,7 +29,7 @@ let package = Package(
                     package: "ExternalDependencies"
                 )
             ],
-            resources: useApiMock ? [.process("Resources/Mocks")] : nil,
+//            resources: useApiMock ? [.process("Resources/Mocks")] : nil,
             swiftSettings: [
                 useApiMock ? .define("API_MOCK") : nil,
             ].compactMap { $0 }

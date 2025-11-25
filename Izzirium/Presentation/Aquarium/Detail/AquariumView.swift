@@ -23,11 +23,23 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
     // MARK: - Body
 
     var body: some View {
-        if let last = viewModel.aquarium.logs.last {
-            content(lastMeasure: last)
-        } else {
-            EmptyView()
+        Group {
+            switch viewModel.dataState {
+            case .loading:
+                ProgressView()
+                    .task {
+                        await viewModel.getLogs()
+                    }
+
+            case .loaded(let logs):
+                content(logs: logs)
+                
+            case .failed(let error):
+                EmptyView()
+            }
         }
+        .zzNavigationTitle(title: viewModel.aquarium.name)
+        .navigationBarTitleDisplayMode(.large)
     }
 
     // MARK: - Init
@@ -38,36 +50,38 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
     
     // MARK: - Methods
     
-    private func content(lastMeasure measure: AquariumUI.LogUI) -> some View {
+    private func content(logs: [AquariumUI.LogUI]) -> some View {
         VStack {
-            ZZText("Dernière mesure faite le \(measure.date.formatted())")
-            
-            LazyVGrid(columns: columns, spacing: MagicUnit.mu100.rawValue) {
-                GridRow {
-                    cell(for: .ph)
-                    cell(for: .tds)
-                }
+            if let last = logs.last {
+                ZZText("Dernière mesure faite le \(last.date.formatted())")
                 
-                GridRow {
-                    cell(for: .turbidity)
-                    cell(for: .temperature)
+                LazyVGrid(columns: columns, spacing: MagicUnit.mu100.rawValue) {
+                    GridRow {
+                        cell(for: .ph, logs: logs)
+                        cell(for: .tds, logs: logs)
+                    }
+                    
+                    GridRow {
+                        cell(for: .turbidity, logs: logs)
+                        cell(for: .temperature, logs: logs)
+                    }
                 }
+            } else {
+                ZZText("Aucune valeurs remontées")
             }
         }
         .padding(.mu100)
-        .zzNavigationTitle(title: viewModel.aquarium.name)
-        .navigationBarTitleDisplayMode(.large)
         .expand(alignment: .top)
     }
 
-    private func cell(for type: AquariumViewModel.LogType) -> some View {
-        let values = viewModel.getMesures(for: type)
+    private func cell(for type: LogType, logs: [AquariumUI.LogUI]) -> some View {
+        let values = viewModel.getValues(for: type, logs: logs)
         return ZZCard {
             ZZText(type.title + " :")
             ZZText("\(values.last?.value ?? 0)")
         } action: {
             pathNavigator.append(AnyZZScreen(
-                AquariumScreen.sensor(type.title, values)
+                AquariumScreen.sensor(type, values)
             ))
         }
         .zzShadow(.medium)
@@ -78,7 +92,32 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
 
 #Preview {
     AquariumView(
-        viewModel: FakeAquariumViewModel()
+        viewModel: FakeAquariumViewModel(withState: .loading, aquarium: AquariumUI.Fake.preview)
+    )
+}
+
+#Preview {
+    AquariumView(
+        viewModel: FakeAquariumViewModel(withState: .loaded([]), aquarium: AquariumUI.Fake.preview)
+    )
+}
+
+#Preview {
+    AquariumView(
+        viewModel: FakeAquariumViewModel(
+            withState: .loaded(
+                [
+                    AquariumUI.LogUI.init(
+                        date: Date(),
+                        ph: 1,
+                        tds: 1,
+                        turbidity: 1,
+                        temperature: 1
+                    )
+                ]
+            ),
+            aquarium: AquariumUI.Fake.preview
+        )
     )
 }
 

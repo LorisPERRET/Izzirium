@@ -6,31 +6,34 @@
 //
 
 import DesignSystem
-//import KastorBoard
+import KastorBoard
 import SKToast
 import SwiftUI
 import SwiftData
 
 @main
 struct IzziriumApp: App {
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self)
+    var appDelegate
 
     var body: some Scene {
         WindowGroup {
             SKToastWindowContainer {
-//                KastorWindowContainer(
-//                    isKastorEnabled: KastorConstants.isKastorEnabled,
-//                    theme: KastorBoardTheme(
-//                        primary: Color.primaryMedium,
-//                        surface: Color.lightHightest,
-//                        surfaceLow: Color.neutralLower,
-//                        onSurface: Color.darkHightest,
-//                        onSurfaceVariantLow: Color.neutralMedium,
-//                        onSurfaceVariantHigh: Color.neutralLow
-//                    ),
-//                    defaultBoard: .logs
-//                ) {
+                KastorWindowContainer(
+                    isKastorEnabled: KastorConstants.isKastorEnabled,
+                    theme: KastorBoardTheme(
+                        primary: Color.primaryMedium,
+                        surface: Color.lightHightest,
+                        surfaceLow: Color.neutralLower,
+                        onSurface: Color.darkHightest,
+                        onSurfaceVariantLow: Color.neutralMedium,
+                        onSurfaceVariantHigh: Color.neutralLow
+                    ),
+                    defaultBoard: .logs
+                ) {
                     RootCoordinatorView(viewModel: RootCoordinatorViewModel())
-//                }
+                }
             }
         }
     }

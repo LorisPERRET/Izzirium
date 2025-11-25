@@ -34,10 +34,10 @@ let package = Package(
         )
     ],
     dependencies: [
-//        .package(
-//            url: "https://gitea.openium.fr/openium/kastor.ios",
-//            branch: "main"
-//        ),
+        .package(
+            url: "https://gitea.openium.fr/openium/kastor.ios",
+            branch: "main"
+        ),
         .package(
             // Releases: https://gitea.openium.fr/openium/SKDevKit/releases
             url: "https://gitea.openium.fr/openium/SKDevKit",
@@ -48,10 +48,10 @@ let package = Package(
 //            url: "https://github.com/firebase/firebase-ios-sdk",
 //            .upToNextMajor(from: "11.10.0")
 //        ),
-//        .package(
-//            url: "https://github.com/openium/papyrus.git",
-//            branch: "updated-swift-syntax-601.0.1"
-//        ),
+        .package(
+            url: "https://github.com/openium/papyrus.git",
+            branch: "updated-swift-syntax-601.0.1"
+        ),
         .package(
             url: "https://github.com/exyte/PopupView.git",
             .upToNextMajor(from: "4.1.14")
@@ -68,8 +68,8 @@ let package = Package(
                 .product(name: "SKState", package: "SKDevKit"),
                 .product(name: "SKToast", package: "SKDevKit"),
                 .product(name: "SKUI", package: "SKDevKit"),
-//                .product(name: "KastorBoard", package: "kastor.ios"),
-//                .product(name: "Kastor", package: "kastor.ios"),
+                .product(name: "KastorBoard", package: "kastor.ios"),
+                .product(name: "Kastor", package: "kastor.ios"),
 //                .product(
 //                    name: "FirebaseMessaging",
 //                    package: "firebase-ios-sdk"
@@ -85,8 +85,8 @@ let package = Package(
             dependencies: [
                 .product(name: "SKDependencyInjection", package: "SKDevKit"),
                 .product(name: "SKLocalStorage", package: "SKDevKit"),
-//                .product(name: "Kastor", package: "kastor.ios"),
-//                .product(name: "PapyrusAlamofire", package: "papyrus")
+                .product(name: "Kastor", package: "kastor.ios"),
+                .product(name: "PapyrusAlamofire", package: "papyrus")
             ],
             path: "Sources",
             sources: ["DataDependencies.swift"]
@@ -105,7 +105,7 @@ let package = Package(
             dependencies: [
                 .product(name: "SKDependencyInjection", package: "SKDevKit"),
                 .product(name: "SKLocalStorage", package: "SKDevKit"),
-//                .product(name: "Kastor", package: "kastor.ios"),
+                .product(name: "Kastor", package: "kastor.ios"),
             ],
             path: "Sources",
             sources: ["DomainDependencies.swift"]
