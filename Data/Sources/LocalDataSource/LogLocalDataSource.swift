@@ -23,7 +23,7 @@ final class LogLocalDataSource: LogLocalDataSourceProtocol {
     // MARK: - LogLocalDataSourceProtocol
 
     func getLogs(aquarium id: Int) throws -> [LogData] {
-        try ZZDatabase.persistent.getAquariumById(id: id).logs
+        try ZZDatabase.persistent.getAquariumById(id: id).logs.sorted { $0.date < $1.date }
     }
 }
 

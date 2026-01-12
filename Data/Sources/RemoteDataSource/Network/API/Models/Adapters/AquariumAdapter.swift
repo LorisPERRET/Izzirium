@@ -14,11 +14,12 @@ enum AquariumAdapter {
 
     // MARK: Adapter
 
+    #warning("TODO Fix list vide quand baptiste aura corriger l'api")
     static func convert(from object: Input) -> Output {
         Output(
             modelId: object.id,
             name: object.name,
-            logs: object.logs.map(LogAdapter.convert)
+            logs: []//object.logs.map(LogAdapter.convert)
         )
     }
 }

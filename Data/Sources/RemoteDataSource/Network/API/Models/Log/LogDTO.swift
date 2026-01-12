@@ -9,6 +9,7 @@ import Foundation
 
 struct LogDTO: Codable, Sendable, Equatable {
     
+    var id: Int
     var date: Date
     
     var ph: Float
@@ -16,7 +17,8 @@ struct LogDTO: Codable, Sendable, Equatable {
     var turbidity: Float
     var temperature: Float
     
-    init(date: Date, ph: Float, tds: Float, turbidity: Float, temperature: Float) {
+    init(id: Int, date: Date, ph: Float, tds: Float, turbidity: Float, temperature: Float) {
+        self.id = id
         self.date = date
         self.ph = ph
         self.tds = tds

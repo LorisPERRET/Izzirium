@@ -13,7 +13,7 @@ protocol AquariumLocalDataSourceProtocol: Sendable {
 
     func getAquariums() -> [AquariumData]
     func getAquarium(byId id: Int) throws -> AquariumData
-    func saveAquariums(aquariums: [AquariumData])
+    func saveAquariums(aquariums: [AquariumData], deleteOther: Bool)
 }
 
 final class AquariumLocalDataSource: AquariumLocalDataSourceProtocol {
@@ -32,8 +32,8 @@ final class AquariumLocalDataSource: AquariumLocalDataSourceProtocol {
         try ZZDatabase.persistent.getAquariumById(id: id)
     }
     
-    func saveAquariums(aquariums: [AquariumData]) {
-        ZZDatabase.persistent.insertArray(aquariums)
+    func saveAquariums(aquariums: [AquariumData], deleteOther: Bool) {
+        ZZDatabase.persistent.insertArray(aquariums, deleteOther: deleteOther)
     }
 }
 

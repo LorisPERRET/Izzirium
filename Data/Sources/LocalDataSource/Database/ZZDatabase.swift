@@ -85,19 +85,19 @@ public struct ZZDatabase {
 
     // MARK: - Insert / Update
 
-    public func insert<T: PersistentModel>(_ object: T) {
+    public func insert<T: PersistentModel>(_ object: T, deleteOther: Bool = false) {
         do {
-            try customInsert(object)
+            try customInsert(object, deleteOther: deleteOther)
             try context.save()
         } catch {
             ZZDatabase.logger.error("❌ Failed to insert: \(error)")
         }
     }
 
-    public func insertArray<T: PersistentModel>(_ objects: [T]) {
+    public func insertArray<T: PersistentModel>(_ objects: [T], deleteOther: Bool = false) {
         do {
             for object in objects {
-                try customInsert(object)
+                try customInsert(object, deleteOther: deleteOther)
             }
             try context.save()
         } catch {
@@ -105,12 +105,17 @@ public struct ZZDatabase {
         }
     }
 
-    private func customInsert<T: PersistentModel>(_ object: T) throws {
+    private func customInsert<T: PersistentModel>(_ object: T, deleteOther: Bool) throws {
         do {
-            if let aquarium = object as? AquariumData {
-                try updateAquariumData(aquarium)
+            if deleteOther {
+                try context.delete(model: T.self)
+            } else {
+                if let aquarium = object as? AquariumData {
+                    try updateAquariumData(aquarium)
+                }
             }
         } catch {}
+
         context.insert(object)
     }
 

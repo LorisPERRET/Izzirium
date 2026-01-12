@@ -15,5 +15,5 @@ import SKDependencyInjection
 protocol AquariumAPI: Sendable {
 
     @GET("/aquariums")
-    func getAquariums() async throws -> AquariumResponseDTO
+    func getAquariums() async throws -> [AquariumDTO]
 }

@@ -20,8 +20,8 @@ final class FakeLogAPI: LogAPI {
 
     // MARK: - LogAPI
     
-    func getLogs(aquarium id: Int) async throws -> LogResponseDTO {
-        LogResponseDTO(logs: LogDTO.Fake.list)
+    func getLogs(aquarium id: Int) async throws -> [LogDTO] {
+        LogDTO.Fake.list
     }
 }
 

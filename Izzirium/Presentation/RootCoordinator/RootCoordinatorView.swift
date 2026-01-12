@@ -50,17 +50,7 @@ struct RootCoordinatorView<ViewModel>: View where ViewModel: RootCoordinatorView
     private func contentView(_ state: LoginState) -> some View {
         switch state {
         case .logged, .withoutLogin:
-//            switch viewModel.dataState {
-//            case .loading:
-//                ProgressView()
-//                    .task {
-//                        await viewModel.requestData()
-//                    }
-//            case .failed(let error):
-//                ZZText(error.localizedDescription)
-//            case .loaded:
             AquariumListView(viewModel: AquariumListViewModel())
-//            }
         case .unlogged:
             EmptyView()
         }

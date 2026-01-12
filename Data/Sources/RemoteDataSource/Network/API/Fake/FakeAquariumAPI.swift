@@ -20,8 +20,8 @@ final class FakeAquariumAPI: AquariumAPI {
 
     // MARK: - AquariumAPI
     
-    func getAquariums() async throws -> AquariumResponseDTO {
-        AquariumResponseDTO(aquariums: AquariumDTO.Fake.list)
+    func getAquariums() async throws -> [AquariumDTO] {
+        AquariumDTO.Fake.list
     }
 }
 

@@ -15,5 +15,5 @@ import SKDependencyInjection
 protocol LogAPI: Sendable {
     
     @GET("/logs/:id")
-    func getLogs(aquarium id: Int) async throws -> LogResponseDTO
+    func getLogs(aquarium id: Int) async throws -> [LogDTO]
 }

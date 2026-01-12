@@ -3,7 +3,7 @@
 
 import PackageDescription
 
-let useApiMock = true
+let useApiMock = false
 
 // swiftlint:disable:next prefixed_toplevel_constant
 let package = Package(

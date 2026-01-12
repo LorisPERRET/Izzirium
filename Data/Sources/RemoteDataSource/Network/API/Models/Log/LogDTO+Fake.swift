@@ -15,6 +15,7 @@ extension LogDTO {
         
         static var log: LogDTO {
             LogDTO(
+                id: 1,
                 date: Date(),
                 ph: 20,
                 tds: 20,
@@ -26,6 +27,7 @@ extension LogDTO {
         static var list: [LogDTO] {
             [
                 LogDTO(
+                    id: 1,
                     date: Date(),
                     ph: 7.2,
                     tds: 220,
@@ -33,6 +35,7 @@ extension LogDTO {
                     temperature: 25.5
                 ),
                 LogDTO(
+                    id: 2,
                     date: Date().advanced(by: 3_600),
                     ph: 7.1,
                     tds: 215,
@@ -40,6 +43,7 @@ extension LogDTO {
                     temperature: 25.7
                 ),
                 LogDTO(
+                    id: 3,
                     date: Date().advanced(by: 7_200),
                     ph: 7.15,
                     tds: 225,
@@ -47,6 +51,7 @@ extension LogDTO {
                     temperature: 25.4
                 ),
                 LogDTO(
+                    id: 4,
                     date: Date().advanced(by: 10_800),
                     ph: 7.05,
                     tds: 230,

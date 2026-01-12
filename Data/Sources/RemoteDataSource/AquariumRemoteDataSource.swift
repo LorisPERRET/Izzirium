@@ -44,7 +44,7 @@ final class AquariumRemoteDataSource: AquariumRemoteDataSourceProtocol {
 
     func fetchAquariums() async throws -> [AquariumDTO] {
         do {
-            return try await api.getAquariums().aquariums
+            return try await api.getAquariums()
         } catch let error as PapyrusError {
             logger.error("FetchAquariums failed: \(error.message)")
 

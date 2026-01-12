@@ -44,7 +44,7 @@ final class LogRemoteDataSource: LogRemoteDataSourceProtocol {
     
     func fetchLogs(aquarium id: Int) async throws -> [LogDTO] {
         do {
-            return try await api.getLogs(aquarium: id).logs
+            return try await api.getLogs(aquarium: id)
         } catch let error as PapyrusError {
             logger.error("FetchLogs failed: \(error.message)")
 

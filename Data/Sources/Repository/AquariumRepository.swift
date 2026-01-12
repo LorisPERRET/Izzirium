@@ -22,7 +22,7 @@ final class AquariumRepository: AquariumRepositoryProtocol {
     
     func getAquariums() async throws -> [AquariumData] {
         let dtos = try await aquariumRemoteDataSource.fetchAquariums()
-        aquariumLocalDataSource.saveAquariums(aquariums: dtos.map(AquariumAdapter.convert))
+        aquariumLocalDataSource.saveAquariums(aquariums: dtos.map(AquariumAdapter.convert), deleteOther: true)
         return aquariumLocalDataSource.getAquariums()
     }
 }

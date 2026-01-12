@@ -28,6 +28,7 @@ extension AquariumDTO {
                     name: "Mon Aquarium de salon",
                     logs: [
                         LogDTO(
+                            id: 1,
                             date: Date(),
                             ph: 7.2,
                             tds: 220,
@@ -35,6 +36,7 @@ extension AquariumDTO {
                             temperature: 25.5
                         ),
                         LogDTO(
+                            id: 2,
                             date: Date().advanced(by: 3_600),
                             ph: 7.1,
                             tds: 215,
@@ -42,6 +44,7 @@ extension AquariumDTO {
                             temperature: 25.7
                         ),
                         LogDTO(
+                            id: 3,
                             date: Date().advanced(by: 7_200),
                             ph: 7.15,
                             tds: 225,
@@ -49,6 +52,7 @@ extension AquariumDTO {
                             temperature: 25.4
                         ),
                         LogDTO(
+                            id: 4,
                             date: Date().advanced(by: 10_800),
                             ph: 7.05,
                             tds: 230,
