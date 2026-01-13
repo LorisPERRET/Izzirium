@@ -9,10 +9,11 @@ import Foundation
 import SwiftData
 
 @Model
-public final class LogData {
+public final class LogData: ModelIdentifiable {
     
     // MARK: - Properties
     
+    @Attribute(.unique) public var modelId: Int
     public var date: Date
     
     public var ph: Float
@@ -24,7 +25,15 @@ public final class LogData {
     
     // MARK: - Init
     
-    public init(date: Date, ph: Float, tds: Float, turbidity: Float, temperature: Float) {
+    public init(
+        id: Int,
+        date: Date,
+        ph: Float,
+        tds: Float,
+        turbidity: Float,
+        temperature: Float
+    ) {
+        self.modelId = id
         self.date = date
         self.ph = ph
         self.tds = tds

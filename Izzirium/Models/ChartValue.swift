@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ChartValue: Identifiable {
+struct ChartValue: Identifiable, Equatable {
         
     // MARK: - Properties
 

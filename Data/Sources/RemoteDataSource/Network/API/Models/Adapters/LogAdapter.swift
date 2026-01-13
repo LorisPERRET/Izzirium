@@ -16,6 +16,7 @@ enum LogAdapter {
 
     static func convert(from object: Input) -> Output {
         Output(
+            id: object.id,
             date: object.date,
             ph: object.ph,
             tds: object.tds,

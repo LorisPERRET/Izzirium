@@ -27,9 +27,6 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
             switch viewModel.dataState {
             case .loading:
                 ProgressView()
-                    .task {
-                        await viewModel.getLogs()
-                    }
 
             case .loaded(let logs):
                 content(logs: logs)
@@ -40,6 +37,9 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
         }
         .zzNavigationTitle(title: viewModel.aquarium.name)
         .navigationBarTitleDisplayMode(.large)
+        .task {
+            await viewModel.getLogs()
+        }
     }
 
     // MARK: - Init
