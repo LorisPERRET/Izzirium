@@ -12,6 +12,6 @@ enum ServerConfiguration {
     // MARK: - Properties
 
     static var baseURL: String {
-        "https://izzirium-api.baptiiiste.com"
+        "https://izzirium-api.baptistebn.com"
     }
 }

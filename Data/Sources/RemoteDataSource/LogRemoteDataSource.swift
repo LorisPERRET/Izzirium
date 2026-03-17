@@ -60,9 +60,11 @@ final class LogRemoteDataSource: LogRemoteDataSourceProtocol {
 
             throw DataError.network
         } catch let error as DecodingError {
-            print(error)
             logger.error(error.localizedDescription)
             throw DataError.decoding
+        } catch {
+            logger.error(error.localizedDescription)
+            throw DataError.network
         }
     }
 }

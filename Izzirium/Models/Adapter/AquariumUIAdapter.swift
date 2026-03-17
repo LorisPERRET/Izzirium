@@ -20,7 +20,8 @@ enum AquariumUIAdapter {
         Output(
             id: object.modelId,
             name: object.name,
-            logs: object.logs.map(LogUIAdapter.convert)
+            logs: object.logs.map(LogUIAdapter.convert),
+            alert: object.alert.map(AlertUIAdapter.convert)
         )
     }
 }

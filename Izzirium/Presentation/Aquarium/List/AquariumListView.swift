@@ -24,6 +24,7 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
         }
         .task {
             await viewModel.fetchAquariums()
+            await viewModel.fetchFavorite()
         }
     }
 
@@ -55,6 +56,10 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
             .navigationBarTitleDisplayMode(.large)
             .scrollContentBackground(.hidden)
             .scrollIndicators(.hidden)
+            .refreshable {
+                await viewModel.fetchAquariums()
+                await viewModel.fetchFavorite()
+            }
         }
     }
     
@@ -101,6 +106,8 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
 }
 
 #if DEBUG
+
+import Data
 
 #Preview("Loaded") {
     AquariumListView(
@@ -150,8 +157,8 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
 #Preview("Error") {
     AquariumListView(
         viewModel: FakeAquariumListViewModel(
-            withListState: .failed(AquariumListViewModel.Error.common),
-            withFavoriteState: .failed(AquariumListViewModel.Error.common)
+            withListState: .failed(DataError.network),
+            withFavoriteState: .failed(DataError.network)
         )
     )
 }

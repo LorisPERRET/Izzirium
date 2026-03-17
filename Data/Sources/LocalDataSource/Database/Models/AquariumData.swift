@@ -19,11 +19,15 @@ public final class AquariumData: ModelIdentifiable {
     @Relationship(deleteRule: .cascade, inverse: \LogData.aquarium)
     public var logs: [LogData]
     
+    @Relationship(deleteRule: .cascade, inverse: \AlertData.aquarium)
+    public var alert: AlertData?
+    
     // MARK: - Init
     
-    public init(modelId: Int, name: String, logs: [LogData]) {
+    public init(modelId: Int, name: String, logs: [LogData], alert: AlertData?) {
         self.modelId = modelId
         self.name = name
         self.logs = logs
+        self.alert = alert
     }
 }

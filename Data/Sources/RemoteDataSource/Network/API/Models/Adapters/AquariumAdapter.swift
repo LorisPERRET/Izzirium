@@ -2,7 +2,7 @@
 //  AquariumAdapter.swift
 //  Data
 //
-//  Created by Benjamin Lambert on 28/10/2025.
+//  Created by Loris Perret on 28/10/2025.
 //
 
 enum AquariumAdapter {
@@ -18,7 +18,8 @@ enum AquariumAdapter {
         Output(
             modelId: object.id,
             name: object.name,
-            logs: []
+            logs: [],
+            alert: nil
         )
     }
 }

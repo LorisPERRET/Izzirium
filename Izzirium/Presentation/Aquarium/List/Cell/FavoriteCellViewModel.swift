@@ -24,23 +24,6 @@ protocol FavoriteCellViewModelProtocol: ObservableObject {
 @InjectedMember(\.getLogsUseCase)
 final class FavoriteCellViewModel: FavoriteCellViewModelProtocol {
 
-    // MARK: - Error
-
-    enum Error: Swift.Error, LocalizedError {
-        
-        case common
-        case notLogged
-        
-        var errorDescription: String? {
-            switch self {
-            case .common:
-                "Une erreur est survenue."
-            case .notLogged:
-                "Vous devez être connecté pour avoir cette information."
-            }
-        }
-    }
-
     // MARK: - Properties
     
     private(set) var aquarium: AquariumUI
@@ -62,13 +45,6 @@ final class FavoriteCellViewModel: FavoriteCellViewModelProtocol {
         do {            
             let logs = try await getLogsUseCase.perform(aquarium: aquarium.id)
             dataState = .loaded(logs.map(LogUIAdapter.convert))
-        } catch let error as DataError {
-            switch error {
-            case .decoding, .network:
-                dataState = .failed(Error.common)
-            case .invalidCredentials:
-                dataState = .failed(Error.notLogged)
-            }
         } catch {
             dataState = .failed(error)
         }

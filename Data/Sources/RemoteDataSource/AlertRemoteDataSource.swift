@@ -1,5 +1,5 @@
 //
-//  AquariumRemoteDataSource.swift
+//  AlertRemoteDataSource.swift
 //  Data
 //
 //  Created by Loris Perret on 24/11/2025.
@@ -8,25 +8,25 @@
 import PapyrusAlamofire
 import SKDependencyInjection
 
-protocol AquariumRemoteDataSourceProtocol: Sendable {
+protocol AlertRemoteDataSourceProtocol: Sendable {
 
-    func fetchAquariums() async throws-> [AquariumDTO]
+    func fetchAlert(aquarium id: Int) async throws-> AlertDTO?
 }
 
 @Singleton
-final class AquariumRemoteDataSource: AquariumRemoteDataSourceProtocol {
+final class AlertRemoteDataSource: AlertRemoteDataSourceProtocol {
     
     // MARK: - Properties
 
-    private let api: AquariumAPI
+    private let api: AlertAPI
 
-    private let logger = Logger(category: AquariumRemoteDataSource.self)
+    private let logger = Logger(category: AlertRemoteDataSource.self)
     
     init() {
 #if API_MOCK
-        self.api = FakeAquariumAPI()
+        self.api = FakeAlertAPI()
 #else
-        self.api = AquariumAPIService(
+        self.api = AlertAPIService(
             provider: Provider.apiProvider(
                 baseURL: ServerConfiguration.baseURL
             )
@@ -35,18 +35,18 @@ final class AquariumRemoteDataSource: AquariumRemoteDataSourceProtocol {
     }
 
 #if DEBUG
-    init(api: AquariumAPI) {
+    init(api: AlertAPI) {
         self.api = api
     }
 #endif
     
-    // MARK: - AquariumRemoteDataSourceProtocol
-
-    func fetchAquariums() async throws -> [AquariumDTO] {
+    // MARK: - AlertRemoteDataSourceProtocol
+    
+    func fetchAlert(aquarium id: Int) async throws -> AlertDTO? {
         do {
-            return try await api.getAquariums()
+            return try await api.getAlert(aquarium: id)
         } catch let error as PapyrusError {
-            logger.error("FetchAquariums failed: \(error.message)")
+            logger.error("FetchAlerts failed: \(error.message)")
 
             guard let response = error.response, let statusCode = response.statusCode else {
                 throw DataError.network
@@ -56,7 +56,7 @@ final class AquariumRemoteDataSource: AquariumRemoteDataSourceProtocol {
                 throw DataError.invalidCredentials
             }
 
-            logger.error("FetchAquariums status code: \(statusCode)")
+            logger.error("FetchAlerts status code: \(statusCode)")
 
             throw DataError.network
         } catch let error as DecodingError {
@@ -71,5 +71,5 @@ final class AquariumRemoteDataSource: AquariumRemoteDataSourceProtocol {
 
 extension InjectedValues {
 
-    @Inject var aquariumRemoteDataSource: AquariumRemoteDataSourceProtocol = AquariumRemoteDataSource.shared
+    @Inject var alertRemoteDataSource: AlertRemoteDataSourceProtocol = AlertRemoteDataSource.shared
 }

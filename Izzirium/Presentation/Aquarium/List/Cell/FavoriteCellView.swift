@@ -137,6 +137,8 @@ struct FavoriteCellView<ViewModel>: View where ViewModel: FavoriteCellViewModelP
 
 #if DEBUG
 
+import Data
+
 #Preview("loading") {
     FavoriteCellView(
         viewModel: FakeFavoriteCellViewModel(
@@ -156,7 +158,7 @@ struct FavoriteCellView<ViewModel>: View where ViewModel: FavoriteCellViewModelP
 #Preview("failed") {
     FavoriteCellView(
         viewModel: FakeFavoriteCellViewModel(
-            withState: .failed(FavoriteCellViewModel.Error.common),
+            withState: .failed(DataError.network),
             aquarium: AquariumUI.Fake.preview
         )
     )

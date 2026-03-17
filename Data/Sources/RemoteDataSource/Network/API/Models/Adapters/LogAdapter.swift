@@ -2,7 +2,7 @@
 //  LogAdapter.swift
 //  Data
 //
-//  Created by Benjamin Lambert on 28/10/2025.
+//  Created by Loris Perret on 28/10/2025.
 //
 
 enum LogAdapter {

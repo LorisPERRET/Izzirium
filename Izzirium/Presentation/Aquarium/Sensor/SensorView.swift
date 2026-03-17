@@ -103,7 +103,6 @@ struct SensorView: View {
                 font: .textS,
                 foregroundColor: Color.neutralMedium
             )
-            .padding(.vertical, .mu050)
             
             if let isWarning, isWarning {
                 ZZText(
@@ -123,7 +122,7 @@ struct SensorView: View {
     private func valueCard(value: ChartValue) -> some View {
         ZZCard(
             bodyContent: {
-                VStack {
+                VStack(alignment: .leading, spacing: MagicUnit.mu050.rawValue) {
                     ZZText(
                         "Dernière mesure faite le \(value.date.formatted())",
                         font: .textS,
@@ -155,10 +154,7 @@ struct SensorView: View {
                         }
                     }
                     
-                    Rectangle()
-                        .fill(Color.neutralLower)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 1)
+                    Divider()
                     
                     alertValue
                 }

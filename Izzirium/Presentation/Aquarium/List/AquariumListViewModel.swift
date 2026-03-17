@@ -25,23 +25,6 @@ protocol AquariumListViewModelProtocol: ObservableObject {
 @InjectedMember(\.getAquariumsUseCase)
 final class AquariumListViewModel: AquariumListViewModelProtocol {
     
-    // MARK: - Error
-    
-    enum Error: Swift.Error, LocalizedError {
-        
-        case common
-        case notLogged
-        
-        var errorDescription: String {
-            switch self {
-            case .common:
-                "Une erreur est survenue. Veuillez réessayer."
-            case .notLogged:
-                "Vous devez être connecté pour faire cette action."
-            }
-        }
-    }
-
     // MARK: - Properties
     
     @Published private(set) var dataListState: SKLoadingState<[AquariumUI]> = .loading
@@ -57,13 +40,6 @@ final class AquariumListViewModel: AquariumListViewModelProtocol {
         do {
             let aquariums = try await getAquariumsUseCase.perform()
             dataListState = .loaded(aquariums.map(AquariumUIAdapter.convert))
-        } catch let error as DataError {
-            switch error {
-            case .decoding, .network:
-                dataListState = .failed(Error.common)
-            case .invalidCredentials:
-                dataListState = .failed(Error.notLogged)
-            }
         } catch {
             dataListState = .failed(error)
         }
@@ -71,5 +47,6 @@ final class AquariumListViewModel: AquariumListViewModelProtocol {
     
     func fetchFavorite() async {
         logger.info("fetchFavorite")
+        dataFavoriteState = .loaded(nil)
     }
 }

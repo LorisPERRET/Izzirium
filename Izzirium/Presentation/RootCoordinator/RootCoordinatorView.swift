@@ -59,6 +59,8 @@ struct RootCoordinatorView<ViewModel>: View where ViewModel: RootCoordinatorView
 
 #if DEBUG
 
+import Data
+
 #Preview("Loading") {
     RootCoordinatorView(
         viewModel: FakeRootCoordinatorViewModel(
@@ -70,7 +72,7 @@ struct RootCoordinatorView<ViewModel>: View where ViewModel: RootCoordinatorView
 #Preview("Error") {
     RootCoordinatorView(
         viewModel: FakeRootCoordinatorViewModel(
-            withLoginState: .failed(NSError(domain: "Domain", code: -1, userInfo: ["UserInfoKey": "Any"]))
+            withLoginState: .failed(DataError.network)
         )
     )
 }

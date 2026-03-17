@@ -12,40 +12,30 @@ import Kastor
 import SKDependencyInjection
 import SKState
 
+struct DataResponse {
+    
+    var logs: [AquariumUI.LogUI]
+    var alert: AquariumUI.AlertUI?
+}
+
 @MainActor
 protocol AquariumViewModelProtocol: ObservableObject {
     
     var aquarium: AquariumUI { get }
-    var dataState: SKLoadingState<[AquariumUI.LogUI]> { get }
+    var dataState: SKLoadingState<DataResponse> { get }
     
-    func getLogs() async
+    func getDatas() async
     func getValues(for type: SensorType, logs: [AquariumUI.LogUI]) -> [ChartValue]
 }
 
 @InjectedMember(\.getLogsUseCase)
+@InjectedMember(\.getAlertUseCase)
 final class AquariumViewModel: AquariumViewModelProtocol {
-
-    // MARK: - Error
-
-    enum Error: Swift.Error, LocalizedError {
-        
-        case common
-        case notLogged
-        
-        var errorDescription: String {
-            switch self {
-            case .common:
-                "Une erreur est survenue. Veuillez réessayer."
-            case .notLogged:
-                "Vous devez être connecté pour faire cette action."
-            }
-        }
-    }
 
     // MARK: - Properties
     
     private(set) var aquarium: AquariumUI
-    @Published private(set) var dataState: SKLoadingState<[AquariumUI.LogUI]> = .loading
+    @Published private(set) var dataState: SKLoadingState<DataResponse> = .loading
 
     private let logger = Logger(category: AquariumViewModel.self)
     
@@ -57,19 +47,22 @@ final class AquariumViewModel: AquariumViewModelProtocol {
 
     // MARK: - AquariumViewModelProtocol
 
-    func getLogs() async {
-        logger.info("getLogs")
+    func getDatas() async {
+        logger.info("getDatas")
         
-        do {            
+        do {
+            logger.info("getLogs")
             let logs = try await getLogsUseCase.perform(aquarium: aquarium.id)
-            dataState = .loaded(logs.map(LogUIAdapter.convert))
-        } catch let error as DataError {
-            switch error {
-            case .decoding, .network:
-                dataState = .failed(Error.common)
-            case .invalidCredentials:
-                dataState = .failed(Error.notLogged)
-            }
+            
+            logger.info("getAlert")
+            let alert = try await getAlertUseCase.perform(aquarium: aquarium.id)
+            
+            dataState = .loaded(
+                DataResponse(
+                    logs: logs.map(LogUIAdapter.convert),
+                    alert: alert.map(AlertUIAdapter.convert)
+                )
+            )
         } catch {
             dataState = .failed(error)
         }
