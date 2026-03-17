@@ -44,7 +44,7 @@ extension FontStyle {
     public static let h3 = FontStyle(
         fontConvertible: ZZFonts.Poppins.medium,
         size: 36,
-        lineHeight: 40,
+        lineHeight: 36,
         textStyle: .title2
     )
 

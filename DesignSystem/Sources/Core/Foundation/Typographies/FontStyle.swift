@@ -24,7 +24,7 @@ public struct FontStyle: Sendable, Hashable {
 
     // MARK: Init
 
-    init(
+    public init(
         fontConvertible: FontConvertible,
         size: CGFloat,
         lineHeight: CGFloat,

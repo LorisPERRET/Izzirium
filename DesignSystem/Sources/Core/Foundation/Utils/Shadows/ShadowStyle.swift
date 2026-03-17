@@ -43,6 +43,7 @@ public enum ShadowStyle {
     case small
     case medium
     case large
+    case none
 
     var radiusStyle: RadiusStyle {
         switch self {
@@ -52,6 +53,8 @@ public enum ShadowStyle {
             .medium
         case .large:
             .large
+        case .none:
+            .zero
         }
     }
 
@@ -63,6 +66,8 @@ public enum ShadowStyle {
             2
         case .large:
             4
+        case .none:
+            .zero
         }
     }
 }

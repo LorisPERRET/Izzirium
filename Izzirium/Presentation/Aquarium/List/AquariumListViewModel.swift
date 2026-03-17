@@ -15,9 +15,11 @@ import SKState
 @MainActor
 protocol AquariumListViewModelProtocol: ObservableObject {
     
-    var dataState: SKLoadingState<[AquariumUI]> { get }
+    var dataListState: SKLoadingState<[AquariumUI]> { get }
+    var dataFavoriteState: SKLoadingState<AquariumUI?> { get }
     
     func fetchAquariums() async
+    func fetchFavorite() async
 }
 
 @InjectedMember(\.getAquariumsUseCase)
@@ -25,15 +27,25 @@ final class AquariumListViewModel: AquariumListViewModelProtocol {
     
     // MARK: - Error
     
-    enum Error: Swift.Error {
+    enum Error: Swift.Error, LocalizedError {
         
         case common
         case notLogged
+        
+        var errorDescription: String {
+            switch self {
+            case .common:
+                "Une erreur est survenue. Veuillez réessayer."
+            case .notLogged:
+                "Vous devez être connecté pour faire cette action."
+            }
+        }
     }
 
     // MARK: - Properties
     
-    @Published private(set) var dataState: SKLoadingState<[AquariumUI]> = .loading
+    @Published private(set) var dataListState: SKLoadingState<[AquariumUI]> = .loading
+    @Published private(set) var dataFavoriteState: SKLoadingState<AquariumUI?> = .loading
 
     private let logger = Logger(category: AquariumListViewModel.self)
 
@@ -44,16 +56,20 @@ final class AquariumListViewModel: AquariumListViewModelProtocol {
         
         do {
             let aquariums = try await getAquariumsUseCase.perform()
-            dataState = .loaded(aquariums.map(AquariumUIAdapter.convert))
+            dataListState = .loaded(aquariums.map(AquariumUIAdapter.convert))
         } catch let error as DataError {
             switch error {
             case .decoding, .network:
-                dataState = .failed(Error.common)
+                dataListState = .failed(Error.common)
             case .invalidCredentials:
-                dataState = .failed(Error.notLogged)
+                dataListState = .failed(Error.notLogged)
             }
         } catch {
-            dataState = .failed(error)
+            dataListState = .failed(error)
         }
+    }
+    
+    func fetchFavorite() async {
+        logger.info("fetchFavorite")
     }
 }

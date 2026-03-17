@@ -38,6 +38,8 @@
 		E161936B2EBC89D70053264B /* ExternalDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ExternalDependencies; sourceTree = "<group>"; };
 		E17F43202ECB20E3008CB755 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
 		E1B052A82ED45EF700EAB1B2 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
+		E1C01AEA2F64115F00C69EC2 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
+		E1C01B3E2F680CAA00C69EC2 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
 		E1C549532EC5C06000B5FB0A /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
 		E1E781B82EBC8C84004CC569 /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Data; sourceTree = "<group>"; };
 		E1E781B92EBC8C84004CC569 /* Domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Domain; sourceTree = "<group>"; };
@@ -127,6 +129,16 @@
 			sourceTree = "<group>";
 		};
 		E1B052AB2ED45EF700EAB1B2 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E1C01AED2F64115F00C69EC2 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E1C01B412F680CAA00C69EC2 /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
@@ -267,8 +279,16 @@
 					ProjectRef = E1C549532EC5C06000B5FB0A /* Izzirium.xcodeproj */;
 				},
 				{
+					ProductGroup = E1C01B412F680CAA00C69EC2 /* Products */;
+					ProjectRef = E1C01B3E2F680CAA00C69EC2 /* Izzirium.xcodeproj */;
+				},
+				{
 					ProductGroup = E1B052AB2ED45EF700EAB1B2 /* Products */;
 					ProjectRef = E1B052A82ED45EF700EAB1B2 /* Izzirium.xcodeproj */;
+				},
+				{
+					ProductGroup = E1C01AED2F64115F00C69EC2 /* Products */;
+					ProjectRef = E1C01AEA2F64115F00C69EC2 /* Izzirium.xcodeproj */;
 				},
 			);
 			projectRoot = "";

@@ -32,11 +32,14 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
                 content(logs: logs)
                 
             case .failed(let error):
-                EmptyView()
+                ZZText(
+                    error.localizedDescription,
+                    frameAlignment: .center
+                )
             }
         }
         .zzNavigationTitle(title: viewModel.aquarium.name)
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
         .task {
             await viewModel.getLogs()
         }
@@ -54,31 +57,69 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
         VStack {
             if let last = logs.last {
                 ZZText("Dernière mesure faite le \(last.date.formatted())")
+                    .padding(.mu100)
                 
-                LazyVGrid(columns: columns, spacing: MagicUnit.mu100.rawValue) {
-                    GridRow {
-                        cell(for: .ph, logs: logs)
-                        cell(for: .tds, logs: logs)
-                    }
-                    
-                    GridRow {
-                        cell(for: .turbidity, logs: logs)
-                        cell(for: .temperature, logs: logs)
+                List {
+                    ForEach(SensorType.allCases, id: \.self) { type in
+                        cell(for: type, logs: logs)
+                            .listRowSeparator(.hidden)
                     }
                 }
+                .scrollContentBackground(.hidden)
+                .scrollIndicators(.hidden)
+                
             } else {
-                ZZText("Aucune valeurs remontées")
+                ZZText(
+                    "Aucune valeurs remontées",
+                    frameAlignment: .center
+                )
+                    .padding(.mu100)
             }
         }
-        .padding(.mu100)
         .expand(alignment: .top)
     }
 
-    private func cell(for type: LogType, logs: [AquariumUI.LogUI]) -> some View {
+    private func cell(for type: SensorType, logs: [AquariumUI.LogUI]) -> some View {
         let values = viewModel.getValues(for: type, logs: logs)
         return ZZCard {
-            ZZText(type.title + " :")
-            ZZText("\(values.last?.value ?? 0)")
+            ZZText(type.title, font: .h6)
+            
+            HStack(alignment: .bottom, spacing: MagicUnit.mu025.rawValue) {
+                ZZText(
+                    "\(values.last?.value ?? 0)",
+                    font: FontStyle(
+                        fontConvertible: ZZFonts.Poppins.semiBold,
+                        size: 36,
+                        lineHeight: 36,
+                        textStyle: .body
+                    ),
+                    maxWidth: false
+                )
+                if let unitLabel = type.unitLabel {
+                    ZZText(
+                        "\(unitLabel)",
+                        font: .h6,
+                        foregroundColor: .gray,
+                        maxWidth: false
+                    )
+                    .padding(.bottom, .mu025)
+                }
+            }
+            
+            Divider()
+            
+            HStack(spacing: MagicUnit.mu050.rawValue) {
+                Image(systemName: "exclamationmark.triangle")
+                    .renderingMode(.template)
+                    .foregroundStyle(Color.neutralLow)
+                ZZText(
+                    "Alertes: min \(0)\(type.unitLabel ?? "") • max \(0)\(type.unitLabel ?? "")",
+                    font: .textXS,
+                    foregroundColor: Color.neutralLow,
+                    maxWidth: false
+                )
+            }
+            
         } action: {
             pathNavigator.append(AnyZZScreen(
                 AquariumScreen.sensor(type, values)

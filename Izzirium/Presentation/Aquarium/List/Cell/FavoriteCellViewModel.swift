@@ -1,5 +1,5 @@
 //
-//  AquariumViewModel.swift
+//  FavoriteCellViewModel.swift
 //  Izzirium
 //
 //  Created by Loris Perret on 06/11/2025.
@@ -13,17 +13,16 @@ import SKDependencyInjection
 import SKState
 
 @MainActor
-protocol AquariumViewModelProtocol: ObservableObject {
+protocol FavoriteCellViewModelProtocol: ObservableObject {
     
     var aquarium: AquariumUI { get }
     var dataState: SKLoadingState<[AquariumUI.LogUI]> { get }
     
     func getLogs() async
-    func getValues(for type: SensorType, logs: [AquariumUI.LogUI]) -> [ChartValue]
 }
 
 @InjectedMember(\.getLogsUseCase)
-final class AquariumViewModel: AquariumViewModelProtocol {
+final class FavoriteCellViewModel: FavoriteCellViewModelProtocol {
 
     // MARK: - Error
 
@@ -32,12 +31,12 @@ final class AquariumViewModel: AquariumViewModelProtocol {
         case common
         case notLogged
         
-        var errorDescription: String {
+        var errorDescription: String? {
             switch self {
             case .common:
-                "Une erreur est survenue. Veuillez réessayer."
+                "Une erreur est survenue."
             case .notLogged:
-                "Vous devez être connecté pour faire cette action."
+                "Vous devez être connecté pour avoir cette information."
             }
         }
     }
@@ -47,7 +46,7 @@ final class AquariumViewModel: AquariumViewModelProtocol {
     private(set) var aquarium: AquariumUI
     @Published private(set) var dataState: SKLoadingState<[AquariumUI.LogUI]> = .loading
 
-    private let logger = Logger(category: AquariumViewModel.self)
+    private let logger = Logger(category: FavoriteCellViewModel.self)
     
     // MARK: - Init
 
@@ -55,7 +54,7 @@ final class AquariumViewModel: AquariumViewModelProtocol {
         self.aquarium = aquarium
     }
 
-    // MARK: - AquariumViewModelProtocol
+    // MARK: - FavoriteCellViewModelProtocol
 
     func getLogs() async {
         logger.info("getLogs")
@@ -72,14 +71,6 @@ final class AquariumViewModel: AquariumViewModelProtocol {
             }
         } catch {
             dataState = .failed(error)
-        }
-    }
-    
-    func getValues(for type: SensorType, logs: [AquariumUI.LogUI]) -> [ChartValue] {
-        logger.info("getValues")
-        
-        return logs.getValues(for: type).map {
-            ChartValue(date: $0.date, value: $0.value)
         }
     }
 }

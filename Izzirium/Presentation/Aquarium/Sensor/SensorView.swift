@@ -14,42 +14,188 @@ struct SensorView: View {
 
     // MARK: - Properties
 
-    let type: LogType
+    let type: SensorType
     let values: [ChartValue]
+    let min: Float
+    let max: Float
 
     @State private var scrollX: Date = .now
+    
+    var isWarning: Bool? {
+        if let last = values.last?.value {
+            return !(min <= last && last <= max)
+        } else {
+            return nil
+        }
+    }
+    
+    var valueColor: Color {
+        guard let isWarning else { return .neutralMedium }
+        
+        if isWarning {
+            return Color.warningMedium
+        } else {
+            return Color.successMedium
+        }
+    }
+    
+    var valueBackgroundColor: Color {
+        guard let isWarning else { return .neutralMedium }
+        
+        if isWarning {
+            return Color.warningLowest
+        } else {
+            return Color.successLowest
+        }
+    }
 
     // MARK: - Body
 
     var body: some View {
-        VStack {
-            if let date = values.map(\.date).max() {
-                ZZText("Dernière mesure faite le \(date.formatted())")
+        ScrollView {
+            VStack(spacing: MagicUnit.mu100.rawValue) {
+                if let last = values.last {
+                    valueCard(value: last)
+                }
+                
+                ZZCard(
+                    bodyContent: {
+                        chart
+                            .padding(.top, .mu050)
+                            .frame(height: 300)
+                    },
+                    action: nil
+                )
+                .zzShadow(.small)
+                .padding(.bottom, .mu400)
             }
-            ZZCard(
-                bodyContent: {
-                    chart
-                        .padding(.top, .mu050)
-                },
-                action: nil
-            )
-            .zzShadow(.medium)
-            .padding(.bottom, .mu400)
+            .padding(.mu100)
         }
         .zzNavigationTitle(title: type.title)
         .navigationBarTitleDisplayMode(.large)
-        .padding(.mu100)
     }
 
     // MARK: - Subviews
+    
+    private func stateIcon(_ isWarning: Bool) -> some View {
+        Image(systemName: isWarning ? "exclamationmark.triangle" : "checkmark.circle")
+            .renderingMode(.template)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .foregroundStyle(valueColor)
+            .frame(
+                width: MagicUnit.mu150.rawValue,
+                height: MagicUnit.mu150.rawValue
+            )
+            .padding(.mu075)
+            .padding(.leading, .mu0125)
+            .padding(.bottom, .mu0125)
+            .background(alignment: .center) {
+                Circle()
+                    .fill(valueBackgroundColor)
+            }
+    }
+    
+    private var alertValue: some View {
+        VStack {
+            ZZText(
+                "Plage normale: \(min)\(type.unitLabel ?? "") - \(max)\(type.unitLabel ?? "")",
+                font: .textS,
+                foregroundColor: Color.neutralMedium
+            )
+            .padding(.vertical, .mu050)
+            
+            if let isWarning, isWarning {
+                ZZText(
+                    "**Attention:** La valeur est en dehors de la plage normale",
+                    font: .textS,
+                    foregroundColor: Color.warningMedium
+                )
+                .padding(.mu100)
+                .background {
+                    Color.warningLowest
+                }
+                .zzRadius(.medium)
+            }
+        }
+    }
+    
+    private func valueCard(value: ChartValue) -> some View {
+        ZZCard(
+            bodyContent: {
+                VStack {
+                    ZZText(
+                        "Dernière mesure faite le \(value.date.formatted())",
+                        font: .textS,
+                        foregroundColor: Color.neutralLow,
+                    )
+                    
+                    HStack {
+                        VStack {
+                            ZZText(
+                                "Valeur actuelle",
+                                font: .textS,
+                                foregroundColor: Color.neutralMedium,
+                            )
+                            
+                            ZZText(
+                                "\(value.value)",
+                                font: FontStyle(
+                                    fontConvertible: ZZFonts.Poppins.regular,
+                                    size: 32,
+                                    lineHeight: 32,
+                                    textStyle: .body
+                                ),
+                                foregroundColor: valueColor,
+                            )
+                        }
+                        
+                        if let isWarning {
+                            stateIcon(isWarning)
+                        }
+                    }
+                    
+                    Rectangle()
+                        .fill(Color.neutralLower)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                    
+                    alertValue
+                }
+            },
+            action: nil
+        )
+        .background(
+            RoundedRectangle(cornerRadius: RadiusStyle.medium.rawValue)
+                .fill(Color.lightHightest)
+                .zzShadow(.small)
+        )
+    }
 
     private var chart: some View {
-        Chart(values) { value in
-            LineMark(
-                x: .value("Date", value.date),
-                y: .value("Valeur", value.value)
+        Chart {
+            // MAX line
+            RuleMark(
+                y: .value("Max", max)
             )
-            .foregroundStyle(Color.primaryMedium)
+            .foregroundStyle(Color.red)
+            .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
+            
+            // Main line
+            ForEach(values) { value in
+                LineMark(
+                    x: .value("Date", value.date),
+                    y: .value("Valeur", value.value)
+                )
+                .foregroundStyle(Color.primaryMedium)
+            }
+
+            // MIN line
+            RuleMark(
+                y: .value("Min", min)
+            )
+            .foregroundStyle(Color.red)
+            .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
         }
         .xConfig(values)
         .yConfig(values)
@@ -151,7 +297,7 @@ private extension View {
 
 #if DEBUG
 
-#Preview {
+#Preview("Good") {
     SensorView(
         type: .ph,
         values: [
@@ -176,7 +322,40 @@ private extension View {
             ChartValue(date: Date().addingTimeInterval(540 * 60), value: 9.2),
             ChartValue(date: Date().addingTimeInterval(570 * 60), value: 8.8),
             ChartValue(date: Date().addingTimeInterval(600 * 60), value: 8.1)
-        ]
+        ],
+        min: 7.5,
+        max: 8.5
+    )
+}
+
+#Preview("Bad") {
+    SensorView(
+        type: .ph,
+        values: [
+            ChartValue(date: Date(), value: 7.2),
+            ChartValue(date: Date().addingTimeInterval(30 * 60), value: 7.4),
+            ChartValue(date: Date().addingTimeInterval(60 * 60), value: 7.1),
+            ChartValue(date: Date().addingTimeInterval(90 * 60), value: 7.6),
+            ChartValue(date: Date().addingTimeInterval(120 * 60), value: 8.2),
+            ChartValue(date: Date().addingTimeInterval(150 * 60), value: 8.9),
+            ChartValue(date: Date().addingTimeInterval(180 * 60), value: 9.4),
+            ChartValue(date: Date().addingTimeInterval(210 * 60), value: 9.1),
+            ChartValue(date: Date().addingTimeInterval(240 * 60), value: 8.7),
+            ChartValue(date: Date().addingTimeInterval(270 * 60), value: 8.3),
+            ChartValue(date: Date().addingTimeInterval(300 * 60), value: 7.9),
+            ChartValue(date: Date().addingTimeInterval(330 * 60), value: 7.5),
+            ChartValue(date: Date().addingTimeInterval(360 * 60), value: 7.2),
+            ChartValue(date: Date().addingTimeInterval(390 * 60), value: 7.0),
+            ChartValue(date: Date().addingTimeInterval(420 * 60), value: 7.3),
+            ChartValue(date: Date().addingTimeInterval(450 * 60), value: 7.8),
+            ChartValue(date: Date().addingTimeInterval(480 * 60), value: 8.4),
+            ChartValue(date: Date().addingTimeInterval(510 * 60), value: 8.9),
+            ChartValue(date: Date().addingTimeInterval(540 * 60), value: 9.2),
+            ChartValue(date: Date().addingTimeInterval(570 * 60), value: 8.8),
+            ChartValue(date: Date().addingTimeInterval(600 * 60), value: 8.6)
+        ],
+        min: 7.5,
+        max: 8.5
     )
 }
 

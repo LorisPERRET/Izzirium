@@ -23,3 +23,19 @@ struct AquariumUI: Identifiable {
     var name: String
     var logs: [LogUI]
 }
+
+extension [AquariumUI.LogUI] {
+    
+    func getValues(for type: SensorType) -> [(date: Date, value: Float)] {
+        switch type {
+        case .ph:
+            return self.map { ($0.date, $0.ph) }
+        case .tds:
+            return self.map { ($0.date, $0.tds) }
+        case .turbidity:
+            return self.map { ($0.date, $0.turbidity) }
+        case .temperature:
+            return self.map { ($0.date, $0.temperature) }
+        }
+    }
+}

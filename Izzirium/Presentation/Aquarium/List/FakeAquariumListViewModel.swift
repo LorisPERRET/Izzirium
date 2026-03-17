@@ -14,17 +14,23 @@ final class FakeAquariumListViewModel: AquariumListViewModelProtocol {
 
     // MARK: - Properties
     
-    @Published private(set) var dataState: SKLoadingState<[AquariumUI]>
+    @Published private(set) var dataListState: SKLoadingState<[AquariumUI]>
+    @Published private(set) var dataFavoriteState: SKLoadingState<AquariumUI?>
 
     // MARK: - Init
     
-    init(withState dataState: SKLoadingState<[AquariumUI]>) {
-        self.dataState = dataState
+    init(
+        withListState dataListState: SKLoadingState<[AquariumUI]>,
+        withFavoriteState dataFavoriteState: SKLoadingState<AquariumUI?>
+    ) {
+        self.dataListState = dataListState
+        self.dataFavoriteState = dataFavoriteState
     }
 
     // MARK: - AquariumListViewModelProtocol
 
     func fetchAquariums() {}
+    func fetchFavorite() {}
 }
 
 #endif

@@ -19,19 +19,8 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
 
     var body: some View {
         ZZNavigationView(path: $navigationPath) {
-            Group {
-                switch viewModel.dataState {
-                case .loading:
-                    ProgressView()
-
-                case .loaded(let list):
-                    content(aquariums: list)
-                    
-                case .failed(let error):
-                    EmptyView()
-                }
-            }
-            .zzNavigationDestinationForAnyZZScreen()
+            content
+                .zzNavigationDestinationForAnyZZScreen()
         }
         .task {
             await viewModel.fetchAquariums()
@@ -47,20 +36,66 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
     // MARK: - Methods
 
     @ViewBuilder
-    private func content(aquariums: [AquariumUI]) -> some View {
-        if aquariums.isEmpty {
-            EmptyView()
+    private var content: some View {
+        if viewModel.dataListState.isLoading, viewModel.dataFavoriteState.isLoading {
+            ProgressView()
         } else {
-            ScrollView {
-                VStack(spacing: MagicUnit.mu100.rawValue) {
-                    ForEach(aquariums) { aquarium in
-                        AquariumCellView(item: aquarium)
-                    }
+            List {
+                Section("Favori") {
+                    favorite
+                        .padding(.bottom, .mu100)
                 }
-                .padding(.mu100)
+                
+                Section("Mes aquariums") {
+                    list
+                        .listRowSeparator(.hidden)
+                }
             }
-            .zzNavigationTitle(title: "Mes Aquariums")
+            .zzNavigationTitle(title: "Izzirium")
             .navigationBarTitleDisplayMode(.large)
+            .scrollContentBackground(.hidden)
+            .scrollIndicators(.hidden)
+        }
+    }
+    
+    @ViewBuilder
+    private var favorite: some View {
+        switch viewModel.dataFavoriteState {
+        case .loading:
+            ProgressView()
+                .frame(maxWidth: .infinity, alignment: .center)
+        case .loaded(let aquarium):
+            if let aquarium {
+                FavoriteCellView(
+                    viewModel: FavoriteCellViewModel(aquarium: aquarium)
+                )
+            } else {
+                ZZText("Vous n'avez aucun aquarium en favori")
+            }
+        case .failed(let error):
+            ZZText(
+                error.localizedDescription,
+                frameAlignment: .center
+            )
+        }
+    }
+    
+    @ViewBuilder
+    private var list: some View {
+        switch viewModel.dataListState {
+        case .loading:
+            ProgressView()
+                .frame(maxWidth: .infinity, alignment: .center)
+        case .loaded(let aquariums):
+            if aquariums.isEmpty {
+                ZZText("Vous n'avez configuré aucun aquarium")
+            } else {
+                ForEach(aquariums) { aquarium in
+                    AquariumCellView(item: aquarium)
+                }
+            }
+        case .failed(let error):
+            ZZText(error.localizedDescription)
         }
     }
 }
@@ -70,7 +105,8 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
 #Preview("Loaded") {
     AquariumListView(
         viewModel: FakeAquariumListViewModel(
-            withState: .loaded(AquariumUI.Fake.list)
+            withListState: .loaded(AquariumUI.Fake.list),
+            withFavoriteState: .loaded(AquariumUI.Fake.preview)
         )
     )
 }
@@ -78,7 +114,8 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
 #Preview("Loaded - Empty") {
     AquariumListView(
         viewModel: FakeAquariumListViewModel(
-            withState: .loaded([])
+            withListState: .loaded([]),
+            withFavoriteState: .loaded(nil)
         )
     )
 }
@@ -86,7 +123,26 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
 #Preview("Loading") {
     AquariumListView(
         viewModel: FakeAquariumListViewModel(
-            withState: .loading
+            withListState: .loading,
+            withFavoriteState: .loading
+        )
+    )
+}
+
+#Preview("Loading") {
+    AquariumListView(
+        viewModel: FakeAquariumListViewModel(
+            withListState: .loaded(AquariumUI.Fake.list),
+            withFavoriteState: .loading
+        )
+    )
+}
+
+#Preview("Loading") {
+    AquariumListView(
+        viewModel: FakeAquariumListViewModel(
+            withListState: .loading,
+            withFavoriteState: .loaded(AquariumUI.Fake.preview)
         )
     )
 }
@@ -94,7 +150,8 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
 #Preview("Error") {
     AquariumListView(
         viewModel: FakeAquariumListViewModel(
-            withState: .failed(NSError(domain: "Domain", code: -1, userInfo: ["UserInfoKey": "Any"]))
+            withListState: .failed(AquariumListViewModel.Error.common),
+            withFavoriteState: .failed(AquariumListViewModel.Error.common)
         )
     )
 }

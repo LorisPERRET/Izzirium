@@ -1,5 +1,5 @@
 //
-//  FakeAquariumViewModel.swift
+//  FakeFavoriteCellViewModel.swift
 //  Izzirium
 //
 //  Created by Loris Perret on 06/11/2025.
@@ -10,7 +10,7 @@
 import Foundation
 import SKState
 
-final class FakeAquariumViewModel: AquariumViewModelProtocol {
+final class FakeFavoriteCellViewModel: FavoriteCellViewModelProtocol {
 
     // MARK: - Properties
     
@@ -24,14 +24,9 @@ final class FakeAquariumViewModel: AquariumViewModelProtocol {
         self.aquarium = aquarium
     }
 
-    // MARK: - AquariumViewModelProtocol
+    // MARK: - FavoriteCellViewModelProtocol
     
     func getLogs() async {}
-    func getValues(for type: SensorType, logs: [AquariumUI.LogUI]) -> [ChartValue] {
-        return logs.getValues(for: type).map {
-            ChartValue(date: $0.date, value: $0.value)
-        }
-    }
 }
 
 #endif

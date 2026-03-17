@@ -20,13 +20,17 @@ struct AquariumCellView: View {
 
     var body: some View {
         ZZCard {
-            ZZText("\(item.name)")
+            HStack {
+                ZZText("\(item.name)")
+                
+                Image(systemName: "chevron.right")
+            }
         } action: {
             pathNavigator.append(
                 AnyZZScreen(AquariumScreen.detail(item))
             )
         }
-        .zzShadow(.medium)
+        .zzShadow(.small)
     }
 
     // MARK: - Methods
