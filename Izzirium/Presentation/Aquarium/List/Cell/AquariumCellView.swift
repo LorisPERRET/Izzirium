@@ -15,6 +15,7 @@ struct AquariumCellView: View {
     @EnvironmentObject private var pathNavigator: ZZPathNavigator
     
     let item: AquariumUI
+    let reloadFavoriteCallback: () -> Void
 
     // MARK: - Body
 
@@ -27,7 +28,7 @@ struct AquariumCellView: View {
             }
         } action: {
             pathNavigator.append(
-                AnyZZScreen(AquariumScreen.detail(item))
+                AnyZZScreen(AquariumScreen.detail(item, reloadFavoriteCallback))
             )
         }
         .zzShadow(.small)
@@ -41,7 +42,7 @@ struct AquariumCellView: View {
 #Preview {
     AquariumCellView(
         item: AquariumUI.Fake.preview
-    )
+    ) {}
 }
 
 #endif

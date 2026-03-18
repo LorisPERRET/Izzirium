@@ -46,16 +46,19 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
                     favorite
                         .padding(.bottom, .mu100)
                 }
+                .listRowSeparator(.hidden)
                 
                 Section("Mes aquariums") {
                     list
                         .listRowSeparator(.hidden)
                 }
+                .listRowSeparator(.hidden)
             }
             .zzNavigationTitle(title: "Izzirium")
             .navigationBarTitleDisplayMode(.large)
             .scrollContentBackground(.hidden)
             .scrollIndicators(.hidden)
+            .contentMargins(0)
             .refreshable {
                 await viewModel.fetchAquariums()
                 await viewModel.fetchFavorite()
@@ -73,7 +76,11 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
             if let aquarium {
                 FavoriteCellView(
                     viewModel: FavoriteCellViewModel(aquarium: aquarium)
-                )
+                ) {
+                    Task {
+                        await viewModel.fetchFavorite()
+                    }
+                }
             } else {
                 ZZText("Vous n'avez aucun aquarium en favori")
             }
@@ -96,7 +103,11 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
                 ZZText("Vous n'avez configuré aucun aquarium")
             } else {
                 ForEach(aquariums) { aquarium in
-                    AquariumCellView(item: aquarium)
+                    AquariumCellView(item: aquarium) {
+                        Task {
+                            await viewModel.fetchFavorite()
+                        }
+                    }
                 }
             }
         case .failed(let error):

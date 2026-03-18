@@ -14,6 +14,7 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
 
     @EnvironmentObject private var pathNavigator: ZZPathNavigator
     @StateObject private var viewModel: ViewModel
+    let reloadFavorite: () -> Void
     
     let columns = [
         GridItem(spacing: MagicUnit.mu100.rawValue),
@@ -30,6 +31,35 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
 
             case .loaded(let datas):
                 content(logs: datas.logs, alert: datas.alert)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                Task {
+                                    await viewModel.setFavorite()
+                                    reloadFavorite()
+                                }
+                            } label: {
+                                Image(systemName: viewModel.favorite == viewModel.aquarium.id ? "star.fill" : "star")
+                                    .renderingMode(.template)
+                                    .foregroundStyle(viewModel.favorite == viewModel.aquarium.id ? Color.warningLow : Color.neutralMedium)
+                            }
+                        }
+                    }
+                    .alert(
+                        "Un autre favori existe, en confirmant vous allez le supprimer.",
+                        isPresented: $viewModel.confirmFavoritePopup
+                    ) {
+                        Button(role: .destructive) {
+                            Task {
+                                await viewModel.confirmFavorite()
+                                reloadFavorite()
+                            }
+                        } label: {
+                            Text("Confirmer")
+                        }
+                        
+                        Button("Annuler", role: .cancel) {}
+                    }
                 
             case .failed(let error):
                 ZZText(
@@ -47,8 +77,9 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
 
     // MARK: - Init
 
-    init(viewModel: @autoclosure @escaping () -> ViewModel) {
+    init(viewModel: @autoclosure @escaping () -> ViewModel, reloadFavorite: @escaping () -> Void) {
         self._viewModel = StateObject(wrappedValue: viewModel())
+        self.reloadFavorite = reloadFavorite
     }
     
     // MARK: - Methods
@@ -57,20 +88,26 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
         logs: [AquariumUI.LogUI],
         alert: AquariumUI.AlertUI?
     ) -> some View {
-        VStack {
+        VStack(spacing: MagicUnit.mu100.rawValue) {
             if let last = logs.last {
-                ZZText("Dernière mesure faite le \(last.date.formatted())")
-                    .padding(.mu100)
-                
                 List {
+                    ZZText("Dernière mesure faite le \(last.date.formatted())")
+                        .listRowSeparator(.hidden)
+                    
                     ForEach(SensorType.allCases, id: \.self) { type in
                         cell(for: type, logs: logs, alert: alert)
                             .listRowSeparator(.hidden)
                     }
                 }
+                .listRowSeparator(.hidden)
                 .scrollContentBackground(.hidden)
                 .scrollIndicators(.hidden)
-                
+                .contentMargins(0)
+                .refreshable {
+                    Task {
+                        await viewModel.getDatas()
+                    }
+                }
             } else {
                 ZZText(
                     "Aucune valeurs remontées",
@@ -112,7 +149,7 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
             }
         } action: {
             pathNavigator.append(AnyZZScreen(
-                AquariumScreen.sensor(type, values)
+                AquariumScreen.sensor(type, values, alert)
             ))
         }
         .background(
@@ -205,20 +242,32 @@ import Data
 
 #Preview("Loading") {
     AquariumView(
-        viewModel: FakeAquariumViewModel(withState: .loading, aquarium: AquariumUI.Fake.preview)
-    )
+        viewModel: FakeAquariumViewModel(
+            withState: .loading,
+            aquarium: AquariumUI.Fake.preview,
+            favorite: nil
+        )
+    ) {}
 }
 
 #Preview("Error") {
     AquariumView(
-        viewModel: FakeAquariumViewModel(withState: .failed(DataError.network), aquarium: AquariumUI.Fake.preview)
-    )
+        viewModel: FakeAquariumViewModel(
+            withState: .failed(DataError.network),
+            aquarium: AquariumUI.Fake.preview,
+            favorite: nil
+        )
+    ) {}
 }
 
 #Preview("Empty") {
     AquariumView(
-        viewModel: FakeAquariumViewModel(withState: .loaded(DataResponse(logs: [], alert: nil)), aquarium: AquariumUI.Fake.preview)
-    )
+        viewModel: FakeAquariumViewModel(
+            withState: .loaded(DataResponse(logs: [], alert: nil)),
+            aquarium: AquariumUI.Fake.preview,
+            favorite: nil
+        )
+    ) {}
 }
 
 #Preview("Logs, Alert") {
@@ -248,9 +297,43 @@ import Data
                 )
                 
             ),
-            aquarium: AquariumUI.Fake.preview
+            aquarium: AquariumUI.Fake.preview,
+            favorite: nil
         )
-    )
+    ) {}
+}
+
+#Preview("Logs, Alert") {
+    AquariumView(
+        viewModel: FakeAquariumViewModel(
+            withState: .loaded(
+                DataResponse(
+                    logs: [
+                        AquariumUI.LogUI(
+                            date: Date(),
+                            ph: 7,
+                            tds: 300,
+                            turbidity: 10,
+                            temperature: 20
+                        )
+                    ],
+                    alert: AquariumUI.AlertUI(
+                        phMin: 6.5,
+                        phMax: 7.5,
+                        tdsMin: 200,
+                        tdsMax: 400,
+                        turbidityMin: 0,
+                        turbidityMax: 5,
+                        temperatureMin: 22,
+                        temperatureMax: 26
+                    )
+                )
+                
+            ),
+            aquarium: AquariumUI.Fake.preview,
+            favorite: 0
+        )
+    ) {}
 }
 
 #Preview("Logs, no Alert") {
@@ -271,9 +354,10 @@ import Data
                 )
                 
             ),
-            aquarium: AquariumUI.Fake.preview
+            aquarium: AquariumUI.Fake.preview,
+            favorite: 1
         )
-    )
+    ) {}
 }
 
 #endif

@@ -23,6 +23,7 @@ protocol AquariumListViewModelProtocol: ObservableObject {
 }
 
 @InjectedMember(\.getAquariumsUseCase)
+@InjectedMember(\.getFavoriteAquariumUseCase)
 final class AquariumListViewModel: AquariumListViewModelProtocol {
     
     // MARK: - Properties
@@ -37,6 +38,8 @@ final class AquariumListViewModel: AquariumListViewModelProtocol {
     func fetchAquariums() async {
         logger.info("fetchAquariums")
         
+        dataListState = .loading
+        
         do {
             let aquariums = try await getAquariumsUseCase.perform()
             dataListState = .loaded(aquariums.map(AquariumUIAdapter.convert))
@@ -47,6 +50,10 @@ final class AquariumListViewModel: AquariumListViewModelProtocol {
     
     func fetchFavorite() async {
         logger.info("fetchFavorite")
-        dataFavoriteState = .loaded(nil)
+        
+        dataFavoriteState = .loading
+        
+        let aquarium = await getFavoriteAquariumUseCase.perform()
+        dataFavoriteState = .loaded(aquarium.map(AquariumUIAdapter.convert))
     }
 }

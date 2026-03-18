@@ -16,12 +16,13 @@ struct SensorView: View {
 
     let type: SensorType
     let values: [ChartValue]
-    let min: Float
-    let max: Float
+    let alert: AquariumUI.AlertUI?
+    
 
     @State private var scrollX: Date = .now
     
     var isWarning: Bool? {
+        guard let (min, max) = alert?.getValue(for: type) else { return nil }
         if let last = values.last?.value {
             return !(min <= last && last <= max)
         } else {
@@ -72,7 +73,7 @@ struct SensorView: View {
             .padding(.mu100)
         }
         .zzNavigationTitle(title: type.title)
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     // MARK: - Subviews
@@ -96,7 +97,7 @@ struct SensorView: View {
             }
     }
     
-    private var alertValue: some View {
+    private func alertValue(min: Float, max: Float) -> some View {
         VStack {
             ZZText(
                 "Plage normale: \(min)\(type.unitLabel ?? "") - \(max)\(type.unitLabel ?? "")",
@@ -156,7 +157,9 @@ struct SensorView: View {
                     
                     Divider()
                     
-                    alertValue
+                    if let (min, max) = alert?.getValue(for: type) {
+                        alertValue(min: min, max: max)
+                    }
                 }
             },
             action: nil
@@ -170,12 +173,21 @@ struct SensorView: View {
 
     private var chart: some View {
         Chart {
-            // MAX line
-            RuleMark(
-                y: .value("Max", max)
-            )
-            .foregroundStyle(Color.red)
-            .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
+            if let (min, max) = alert?.getValue(for: type) {
+                // MAX line
+                RuleMark(
+                    y: .value("Max", max)
+                )
+                .foregroundStyle(Color.red)
+                .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
+                
+                // MIN line
+                RuleMark(
+                    y: .value("Min", min)
+                )
+                .foregroundStyle(Color.red)
+                .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
+            }
             
             // Main line
             ForEach(values) { value in
@@ -185,13 +197,6 @@ struct SensorView: View {
                 )
                 .foregroundStyle(Color.primaryMedium)
             }
-
-            // MIN line
-            RuleMark(
-                y: .value("Min", min)
-            )
-            .foregroundStyle(Color.red)
-            .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
         }
         .xConfig(values)
         .yConfig(values)
@@ -319,8 +324,16 @@ private extension View {
             ChartValue(date: Date().addingTimeInterval(570 * 60), value: 8.8),
             ChartValue(date: Date().addingTimeInterval(600 * 60), value: 8.1)
         ],
-        min: 7.5,
-        max: 8.5
+        alert: AquariumUI.AlertUI(
+            phMin: 7.5,
+            phMax: 8.5,
+            tdsMin: 0,
+            tdsMax: 0,
+            turbidityMin: 0,
+            turbidityMax: 0,
+            temperatureMin: 0,
+            temperatureMax: 0
+        )
     )
 }
 
@@ -350,8 +363,46 @@ private extension View {
             ChartValue(date: Date().addingTimeInterval(570 * 60), value: 8.8),
             ChartValue(date: Date().addingTimeInterval(600 * 60), value: 8.6)
         ],
-        min: 7.5,
-        max: 8.5
+        alert: AquariumUI.AlertUI(
+            phMin: 7.5,
+            phMax: 8.5,
+            tdsMin: 0,
+            tdsMax: 0,
+            turbidityMin: 0,
+            turbidityMax: 0,
+            temperatureMin: 0,
+            temperatureMax: 0
+        )
+    )
+}
+
+#Preview("No alert") {
+    SensorView(
+        type: .ph,
+        values: [
+            ChartValue(date: Date(), value: 7.2),
+            ChartValue(date: Date().addingTimeInterval(30 * 60), value: 7.4),
+            ChartValue(date: Date().addingTimeInterval(60 * 60), value: 7.1),
+            ChartValue(date: Date().addingTimeInterval(90 * 60), value: 7.6),
+            ChartValue(date: Date().addingTimeInterval(120 * 60), value: 8.2),
+            ChartValue(date: Date().addingTimeInterval(150 * 60), value: 8.9),
+            ChartValue(date: Date().addingTimeInterval(180 * 60), value: 9.4),
+            ChartValue(date: Date().addingTimeInterval(210 * 60), value: 9.1),
+            ChartValue(date: Date().addingTimeInterval(240 * 60), value: 8.7),
+            ChartValue(date: Date().addingTimeInterval(270 * 60), value: 8.3),
+            ChartValue(date: Date().addingTimeInterval(300 * 60), value: 7.9),
+            ChartValue(date: Date().addingTimeInterval(330 * 60), value: 7.5),
+            ChartValue(date: Date().addingTimeInterval(360 * 60), value: 7.2),
+            ChartValue(date: Date().addingTimeInterval(390 * 60), value: 7.0),
+            ChartValue(date: Date().addingTimeInterval(420 * 60), value: 7.3),
+            ChartValue(date: Date().addingTimeInterval(450 * 60), value: 7.8),
+            ChartValue(date: Date().addingTimeInterval(480 * 60), value: 8.4),
+            ChartValue(date: Date().addingTimeInterval(510 * 60), value: 8.9),
+            ChartValue(date: Date().addingTimeInterval(540 * 60), value: 9.2),
+            ChartValue(date: Date().addingTimeInterval(570 * 60), value: 8.8),
+            ChartValue(date: Date().addingTimeInterval(600 * 60), value: 8.6)
+        ],
+        alert: nil
     )
 }
 

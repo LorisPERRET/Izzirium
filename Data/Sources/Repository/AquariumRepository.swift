@@ -11,6 +11,8 @@ import SKDependencyInjection
 @MainActor
 public protocol AquariumRepositoryProtocol: Sendable {
 
+    func setFavorite(aquarium id: Int?) async
+    func getFavoriteAquarium() async -> AquariumData?
     func getAquariums() async throws -> [AquariumData]
 }
 
@@ -19,6 +21,16 @@ public protocol AquariumRepositoryProtocol: Sendable {
 final class AquariumRepository: AquariumRepositoryProtocol {
     
     // MARK: - AquariumRepository
+    
+    func setFavorite(aquarium id: Int?) async {
+        await aquariumLocalDataSource.setFavoriteAquarium(id: id)
+    }
+    
+    func getFavoriteAquarium() async -> AquariumData? {
+        guard let id = await aquariumLocalDataSource.getFavoriteAquariumId() else { return nil }
+        
+        return try? aquariumLocalDataSource.getAquarium(byId: id)
+    }
     
     func getAquariums() async throws -> [AquariumData] {
         let dtos = try await aquariumRemoteDataSource.fetchAquariums()

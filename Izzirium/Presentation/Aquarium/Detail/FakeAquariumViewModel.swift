@@ -15,13 +15,16 @@ final class FakeAquariumViewModel: AquariumViewModelProtocol {
     // MARK: - Properties
     
     private(set) var aquarium: AquariumUI
+    private(set) var favorite: Int?
     private(set) var dataState: SKState.SKLoadingState<DataResponse>
+    @Published var confirmFavoritePopup = false
     
     // MARK: - Init
     
-    init(withState dataState: SKLoadingState<DataResponse>, aquarium: AquariumUI) {
+    init(withState dataState: SKLoadingState<DataResponse>, aquarium: AquariumUI, favorite: Int?) {
         self.dataState = dataState
         self.aquarium = aquarium
+        self.favorite = favorite
     }
 
     // MARK: - AquariumViewModelProtocol
@@ -31,6 +34,22 @@ final class FakeAquariumViewModel: AquariumViewModelProtocol {
         return logs.getValues(for: type).map {
             ChartValue(date: $0.date, value: $0.value)
         }
+    }
+    
+    func setFavorite() async {
+        if let favorite {
+            if favorite == aquarium.id {
+                self.favorite = aquarium.id
+            } else {
+                confirmFavoritePopup = true
+            }
+        } else {
+            favorite = aquarium.id
+        }
+    }
+    
+    func confirmFavorite() async {
+        favorite = aquarium.id
     }
 }
 

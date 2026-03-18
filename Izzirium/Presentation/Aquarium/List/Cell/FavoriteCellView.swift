@@ -14,6 +14,7 @@ struct FavoriteCellView<ViewModel>: View where ViewModel: FavoriteCellViewModelP
 
     @EnvironmentObject private var pathNavigator: ZZPathNavigator
     @StateObject private var viewModel: ViewModel
+    let reloadFavoriteCallback: () -> Void
     
     private let columns = [
         GridItem(spacing: MagicUnit.mu100.rawValue),
@@ -57,18 +58,26 @@ struct FavoriteCellView<ViewModel>: View where ViewModel: FavoriteCellViewModelP
             },
             action: {
                 pathNavigator.append(
-                    AnyZZScreen(AquariumScreen.detail(viewModel.aquarium))
+                    AnyZZScreen(AquariumScreen.detail(viewModel.aquarium, reloadFavoriteCallback))
                 )
             },
             backgroundColor: .primaryMedium
         )
-        .zzShadow(.small)
+        .background(
+            RoundedRectangle(cornerRadius: RadiusStyle.medium.rawValue)
+                .fill(Color.lightHightest)
+                .zzShadow(.small)
+        )
+        .task {
+            await viewModel.getLogs()
+        }
     }
     
     // MARK: - Init
     
-    init(viewModel: @autoclosure @escaping () -> ViewModel) {
+    init(viewModel: @autoclosure @escaping () -> ViewModel, reloadFavoriteCallback: @escaping () -> Void) {
         self._viewModel = StateObject(wrappedValue: viewModel())
+        self.reloadFavoriteCallback = reloadFavoriteCallback
     }
 
     // MARK: - Methods
@@ -131,7 +140,6 @@ struct FavoriteCellView<ViewModel>: View where ViewModel: FavoriteCellViewModelP
             action: nil,
             backgroundColor: Color.primaryLow
         )
-        .zzShadow(.medium)
     }
 }
 
@@ -144,7 +152,7 @@ import Data
         viewModel: FakeFavoriteCellViewModel(
             withState: .loading, aquarium: AquariumUI.Fake.preview
         )
-    )
+    ) {}
 }
 
 #Preview("empty") {
@@ -152,7 +160,7 @@ import Data
         viewModel: FakeFavoriteCellViewModel(
             withState: .loaded([]), aquarium: AquariumUI.Fake.preview
         )
-    )
+    ) {}
 }
 
 #Preview("failed") {
@@ -161,7 +169,7 @@ import Data
             withState: .failed(DataError.network),
             aquarium: AquariumUI.Fake.preview
         )
-    )
+    ) {}
 }
 
 #Preview("loaded") {
@@ -180,7 +188,7 @@ import Data
             ),
             aquarium: AquariumUI.Fake.preview
         )
-    )
+    ) {}
 }
 
 #endif

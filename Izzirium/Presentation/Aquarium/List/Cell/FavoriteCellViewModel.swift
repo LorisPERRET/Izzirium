@@ -42,6 +42,8 @@ final class FavoriteCellViewModel: FavoriteCellViewModelProtocol {
     func getLogs() async {
         logger.info("getLogs")
         
+        dataState = .loading
+        
         do {            
             let logs = try await getLogsUseCase.perform(aquarium: aquarium.id)
             dataState = .loaded(logs.map(LogUIAdapter.convert))
