@@ -11,6 +11,7 @@ import Foundation
 import SKState
 
 final class FakeRootCoordinatorViewModel: RootCoordinatorViewModelProtocol {
+    
 
     // MARK: - Properties
 
@@ -27,6 +28,7 @@ final class FakeRootCoordinatorViewModel: RootCoordinatorViewModelProtocol {
     // MARK: - RootCoordinatorViewModelProtocol
 
     func fetchLoginState() {}
+    func onSuccessLogin() {}
 }
 
 #endif

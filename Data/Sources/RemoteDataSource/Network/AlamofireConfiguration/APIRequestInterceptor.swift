@@ -46,7 +46,7 @@ struct APIRequestRetrier {
     }
 }
 
-//@InjectedMember(\.keychainStorage, protocol: (any KeychainStorageProtocol<KeychainStorageKey>).self)
+@InjectedMember(\.keychainStorage, protocol: (any KeychainStorageProtocol<KeychainStorageKey>).self)
 final class APIRequestInterceptor: RequestInterceptor, @unchecked Sendable {
 
     // MARK: - Properties
@@ -83,9 +83,9 @@ final class APIRequestInterceptor: RequestInterceptor, @unchecked Sendable {
         Task {
             do {
                 var authenticatedRequest = urlRequest
-//                if let accessToken = try await self.keychainStorage.getString(key: .accessToken) {
-//                    authenticatedRequest.headers.add(.authorization(bearerToken: accessToken))
-//                }
+                if let accessToken = try await self.keychainStorage.getString(key: .accessToken) {
+                    authenticatedRequest.headers.add(.authorization(bearerToken: accessToken))
+                }
                 completion(.success(authenticatedRequest))
             } catch {
                 completion(.failure(error))

@@ -28,7 +28,8 @@ final class AquariumRemoteDataSource: AquariumRemoteDataSourceProtocol {
 #else
         self.api = AquariumAPIService(
             provider: Provider.apiProvider(
-                baseURL: ServerConfiguration.baseURL
+                baseURL: ServerConfiguration.baseURL,
+                sessionType: .authenticate
             )
         )
 #endif

@@ -28,7 +28,8 @@ final class AlertRemoteDataSource: AlertRemoteDataSourceProtocol {
 #else
         self.api = AlertAPIService(
             provider: Provider.apiProvider(
-                baseURL: ServerConfiguration.baseURL
+                baseURL: ServerConfiguration.baseURL,
+                sessionType: .authenticate
             )
         )
 #endif

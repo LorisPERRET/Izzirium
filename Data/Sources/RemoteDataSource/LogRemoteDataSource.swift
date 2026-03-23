@@ -28,7 +28,8 @@ final class LogRemoteDataSource: LogRemoteDataSourceProtocol {
 #else
         self.api = LogAPIService(
             provider: Provider.apiProvider(
-                baseURL: ServerConfiguration.baseURL
+                baseURL: ServerConfiguration.baseURL,
+                sessionType: .authenticate
             )
         )
 #endif

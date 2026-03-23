@@ -12,20 +12,20 @@ import PapyrusAlamofire
 
 extension Provider {
 
-//    enum SessionType {
-//
-//        case authenticate(AuthenticationRepositoryProtocol)
-//        case unauthenticate
-//
-//        var isAuthenticated: Bool {
-//            switch self {
-//            case .authenticate:
-//                true
-//            case .unauthenticate:
-//                false
-//            }
-//        }
-//
+    enum SessionType {
+
+        case authenticate//(AuthenticationRepositoryProtocol)
+        case unauthenticate
+
+        var isAuthenticated: Bool {
+            switch self {
+            case .authenticate:
+                true
+            case .unauthenticate:
+                false
+            }
+        }
+
 //        var authenticationRepository: AuthenticationRepositoryProtocol? {
 //            switch self {
 //            case let .authenticate(repository):
@@ -34,7 +34,7 @@ extension Provider {
 //                nil
 //            }
 //        }
-//    }
+    }
 
     /// Creates and configures a network Provider instance for API communication
     /// - Parameters:
@@ -43,8 +43,8 @@ extension Provider {
     /// - Returns: A configured Provider instance ready for making API requests
     static func apiProvider(
         baseURL: String,
-//        sessionType: SessionType = .unauthenticate,
-//        authorizationValue: String? = nil
+        sessionType: SessionType = .unauthenticate,
+        authorizationValue: String? = nil
     ) -> Provider {
         // Create default session configuration
         let sessionConfiguration = URLSessionConfiguration.af.default
@@ -52,15 +52,15 @@ extension Provider {
         sessionConfiguration.httpShouldSetCookies = false
 
         // Add authorization header if provided
-//        if let authorizationValue {
-//            // Escape newlines in authorization value
-//            let authorizationHeaderValue = authorizationValue
-//                .replacingOccurrences(of: "\n", with: "\\n")
-//            // Set authorization header with properly formatted value
-//            sessionConfiguration.httpAdditionalHeaders = [
-//                "Authorization": "\"\(authorizationHeaderValue)\""
-//            ]
-//        }
+        if let authorizationValue {
+            // Escape newlines in authorization value
+            let authorizationHeaderValue = authorizationValue
+                .replacingOccurrences(of: "\n", with: "\\n")
+            // Set authorization header with properly formatted value
+            sessionConfiguration.httpAdditionalHeaders = [
+                "Authorization": "\"\(authorizationHeaderValue)\""
+            ]
+        }
 //
 //        var onNeedReauthentication: (() async -> Void)?
 //        if let authenticationRepository = sessionType.authenticationRepository {
@@ -73,7 +73,7 @@ extension Provider {
         let session = Alamofire.Session(
             configuration: sessionConfiguration,
             interceptor: APIRequestInterceptor(
-                needAuthorization: false,//sessionType.isAuthenticated,
+                needAuthorization: sessionType.isAuthenticated,
                 onNeedReauthentication: nil//onNeedReauthentication
             ),
             eventMonitors: [APILogger()]

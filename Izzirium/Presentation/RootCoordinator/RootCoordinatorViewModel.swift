@@ -7,7 +7,7 @@
 
 import Combine
 import Data
-//import Domain
+import Domain
 import Foundation
 import Kastor
 import SKDependencyInjection
@@ -20,8 +20,10 @@ protocol RootCoordinatorViewModelProtocol: ObservableObject {
     var loginState: SKLoadingState<LoginState> { get }
 
     func fetchLoginState() async
+    func onSuccessLogin()
 }
 
+@InjectedMember(\.isUserLoggedUseCase)
 final class RootCoordinatorViewModel: RootCoordinatorViewModelProtocol {
 
     // MARK: - Properties
@@ -35,6 +37,18 @@ final class RootCoordinatorViewModel: RootCoordinatorViewModelProtocol {
     func fetchLoginState() async {
         logger.info("fetchLoginState")
         
+        loginState = .loading
+        
+        let res = await isUserLoggedUseCase.perform()
+        
+        if res {
+            loginState = .loaded(.logged)
+        } else {
+            loginState = .loaded(.unlogged)
+        }
+    }
+    
+    func onSuccessLogin() {
         loginState = .loaded(.logged)
     }
 }

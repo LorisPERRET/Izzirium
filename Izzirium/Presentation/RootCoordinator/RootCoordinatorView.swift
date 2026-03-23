@@ -52,7 +52,7 @@ struct RootCoordinatorView<ViewModel>: View where ViewModel: RootCoordinatorView
         case .logged, .withoutLogin:
             AquariumListView(viewModel: AquariumListViewModel())
         case .unlogged:
-            EmptyView()
+            LoginView(viewModel: LoginViewModel(onSuccess: viewModel.onSuccessLogin))
         }
     }
 }
