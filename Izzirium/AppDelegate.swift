@@ -20,6 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Dependency injection
 
+    @Injected(\.requestPushNotificationUseCase)
+    private var requestPushNotificationUseCase
+    
+    @Injected(\.sendDeviceTokenUseCase)
+    private var sendDeviceTokenUseCase
+
     // MARK: - Properties
 
     // Logger
@@ -33,6 +39,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AppDelegate.instance = self
 
         setupKastor()
+        
+        Task {
+            do {
+                try await requestPushNotificationUseCase.perform()
+            } catch {
+                logger.error(error.localizedDescription)
+            }
+        }
         
         logger.info("App Finish Launching")
 
@@ -60,6 +74,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+    }
+    
+    func application(_ application: UIApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
+        let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
+        let token = tokenParts.joined()
+        
+        Task {
+            do {
+                try await sendDeviceTokenUseCase.perform(token: token)
+            } catch {
+                logger.error(error.localizedDescription)
+            }
+        }
     }
 
     // MARK: - Private methods
