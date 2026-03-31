@@ -52,6 +52,8 @@ public struct ZZDatabase {
                 ZZDatabase.logger.error("SwiftData init failed, deleting db and retrying: \(error)")
 
                 try? fileManager.removeItem(at: url)
+                try? fileManager.removeItem(at: url.appendingPathExtension("shm"))
+                try? fileManager.removeItem(at: url.appendingPathExtension("wal"))
 
                 let container = try ModelContainer(for: schema, configurations: [config])
                 return ZZDatabase(container: container)
@@ -65,6 +67,7 @@ public struct ZZDatabase {
     public static var schema: Schema {
         Schema([
             AquariumData.self,
+            AlertData.self,
             LogData.self
         ])
     }
@@ -102,6 +105,14 @@ public struct ZZDatabase {
             try context.save()
         } catch {
             ZZDatabase.logger.error("❌ Failed to insert array: \(error)")
+        }
+    }
+
+    public func save() {
+        do {
+            try context.save()
+        } catch {
+            ZZDatabase.logger.error("❌ Failed to save context: \(error)")
         }
     }
 

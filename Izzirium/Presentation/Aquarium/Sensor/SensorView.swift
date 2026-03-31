@@ -16,7 +16,7 @@ struct SensorView: View {
 
     let type: SensorType
     let values: [ChartValue]
-    let alert: AquariumUI.AlertUI?
+    let alert: AlertUI?
     
 
     @State private var scrollX: Date = .now
@@ -324,7 +324,7 @@ private extension View {
             ChartValue(date: Date().addingTimeInterval(570 * 60), value: 8.8),
             ChartValue(date: Date().addingTimeInterval(600 * 60), value: 8.1)
         ],
-        alert: AquariumUI.AlertUI(
+        alert: AlertUI(
             phMin: 7.5,
             phMax: 8.5,
             tdsMin: 0,
@@ -363,7 +363,7 @@ private extension View {
             ChartValue(date: Date().addingTimeInterval(570 * 60), value: 8.8),
             ChartValue(date: Date().addingTimeInterval(600 * 60), value: 8.6)
         ],
-        alert: AquariumUI.AlertUI(
+        alert: AlertUI(
             phMin: 7.5,
             phMax: 8.5,
             tdsMin: 0,

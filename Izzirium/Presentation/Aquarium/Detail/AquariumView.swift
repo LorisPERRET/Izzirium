@@ -44,6 +44,25 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
                                     .foregroundStyle(viewModel.favorite == viewModel.aquarium.id ? Color.warningLow : Color.neutralMedium)
                             }
                         }
+                        
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                pathNavigator.append(
+                                    AnyZZScreen(
+                                        AquariumScreen.settings(
+                                            viewModel.aquarium,
+                                            viewModel.aquarium.alert
+                                        ) {
+                                            await viewModel.getDatas()
+                                        }
+                                    )
+                                )
+                            } label: {
+                                Image(systemName: "gear")
+                                    .renderingMode(.template)
+                                    .foregroundStyle(Color.primaryMedium)
+                            }
+                        }
                     }
                     .alert(
                         "Un autre favori existe, en confirmant vous allez le supprimer.",
@@ -86,7 +105,7 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
     
     private func content(
         logs: [AquariumUI.LogUI],
-        alert: AquariumUI.AlertUI?
+        alert: AlertUI?
     ) -> some View {
         VStack(spacing: MagicUnit.mu100.rawValue) {
             if let last = logs.last {
@@ -122,7 +141,7 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
     private func cell(
         for type: SensorType,
         logs: [AquariumUI.LogUI],
-        alert: AquariumUI.AlertUI?
+        alert: AlertUI?
     ) -> some View {
         let values = viewModel.getValues(for: type, logs: logs)
         let value = values.last?.value
@@ -284,7 +303,7 @@ import Data
                             temperature: 20
                         )
                     ],
-                    alert: AquariumUI.AlertUI(
+                    alert: AlertUI(
                         phMin: 6.5,
                         phMax: 7.5,
                         tdsMin: 200,
@@ -317,7 +336,7 @@ import Data
                             temperature: 20
                         )
                     ],
-                    alert: AquariumUI.AlertUI(
+                    alert: AlertUI(
                         phMin: 6.5,
                         phMax: 7.5,
                         tdsMin: 200,

@@ -63,6 +63,15 @@ extension UserDefaults {
         }
     }
 
+    dynamic var pairedBLEDevices: [PairedBLEDevice] {
+        get {
+            decodeObject(forKey: #function) ?? []
+        }
+        set {
+            encodeObject(newValue, forKey: #function)
+        }
+    }
+
     // MARK: Private methods
 
     private func decodeObject<T: Codable>(forKey key: String) -> T? {

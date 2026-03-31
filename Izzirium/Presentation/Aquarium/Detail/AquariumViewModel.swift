@@ -15,7 +15,7 @@ import SKState
 struct DataResponse {
     
     var logs: [AquariumUI.LogUI]
-    var alert: AquariumUI.AlertUI?
+    var alert: AlertUI?
 }
 
 @MainActor

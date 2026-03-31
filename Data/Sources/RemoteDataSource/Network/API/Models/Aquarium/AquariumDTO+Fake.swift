@@ -11,7 +11,7 @@ import Foundation
 
 extension AquariumDTO {
 
-    public enum Fake {
+    enum Fake {
         
         static var aquarium: AquariumDTO {
             AquariumDTO(

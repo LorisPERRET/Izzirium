@@ -14,7 +14,6 @@ final class JSONEncoderAPI: JSONEncoder, @unchecked Sendable {
     override init() {
         super.init()
 
-        keyEncodingStrategy = .convertToSnakeCase
         dateEncodingStrategy = .iso8601
     }
 }

@@ -32,12 +32,14 @@
 
 /* Begin PBXFileReference section */
 		E10580DE2F6A9136001A2922 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
+		E13B19042F7152BE006AFAA4 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
 		E14B9BF32ECF473000731306 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
 		E16191252EBC894F0053264B /* Izzirium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Izzirium.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E16191372EBC89500053264B /* IzziriumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IzziriumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E16191412EBC89500053264B /* IzziriumUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IzziriumUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E161936B2EBC89D70053264B /* ExternalDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ExternalDependencies; sourceTree = "<group>"; };
 		E17F43202ECB20E3008CB755 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
+		E1916B1C2F7181760007F883 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
 		E1B052A82ED45EF700EAB1B2 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
 		E1C01AEA2F64115F00C69EC2 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
 		E1C01B3E2F680CAA00C69EC2 /* Izzirium.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Izzirium.xcodeproj; sourceTree = "<group>"; };
@@ -99,6 +101,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		E13B19072F7152BE006AFAA4 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		E14B9BF52ECF473000731306 /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
@@ -130,6 +137,11 @@
 			sourceTree = "<group>";
 		};
 		E17F43222ECB20E3008CB755 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E1916B1F2F7181760007F883 /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
@@ -277,6 +289,18 @@
 					ProjectRef = E14B9BF32ECF473000731306 /* Izzirium.xcodeproj */;
 				},
 				{
+					ProductGroup = E13B19072F7152BE006AFAA4 /* Products */;
+					ProjectRef = E13B19042F7152BE006AFAA4 /* Izzirium.xcodeproj */;
+				},
+				{
+					ProductGroup = E1C01AED2F64115F00C69EC2 /* Products */;
+					ProjectRef = E1C01AEA2F64115F00C69EC2 /* Izzirium.xcodeproj */;
+				},
+				{
+					ProductGroup = E1916B1F2F7181760007F883 /* Products */;
+					ProjectRef = E1916B1C2F7181760007F883 /* Izzirium.xcodeproj */;
+				},
+				{
 					ProductGroup = E17F43222ECB20E3008CB755 /* Products */;
 					ProjectRef = E17F43202ECB20E3008CB755 /* Izzirium.xcodeproj */;
 				},
@@ -295,10 +319,6 @@
 				{
 					ProductGroup = E10580E12F6A9136001A2922 /* Products */;
 					ProjectRef = E10580DE2F6A9136001A2922 /* Izzirium.xcodeproj */;
-				},
-				{
-					ProductGroup = E1C01AED2F64115F00C69EC2 /* Products */;
-					ProjectRef = E1C01AEA2F64115F00C69EC2 /* Izzirium.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -424,6 +444,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "L'application utilise le Bluetooth pour détecter et configurer votre objet connecté.";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -481,6 +502,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "L'application utilise le Bluetooth pour détecter et configurer votre objet connecté.";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;

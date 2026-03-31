@@ -11,7 +11,7 @@ import Foundation
 
 extension AlertDTO {
     
-    public enum Fake {
+    enum Fake {
         
         static var preview: AlertDTO {
             AlertDTO(

@@ -24,8 +24,8 @@ final class LogRepository: LogRepositoryProtocol {
     func getLogs(aquarium id: Int) async throws -> [LogData] {
         let dtos = try await logRemoteDataSource.fetchLogs(aquarium: id)
         let aquarium = try aquariumLocalDataSource.getAquarium(byId: id)
-        aquarium.logs.append(contentsOf: dtos.map(LogAdapter.convert)) 
-        aquariumLocalDataSource.saveAquariums(aquariums: [aquarium], deleteOther: false)
+        aquarium.logs.append(contentsOf: dtos.map(LogAdapter.convert))
+        aquariumLocalDataSource.save()
         return try logLocalDataSource.getLogs(aquarium: id)
     }
 }

@@ -32,7 +32,7 @@ extension ZZTextField {
             case .email:
                 return .emailAddress
             case .numeric:
-                return .numberPad
+                return .decimalPad
             default:
                 return .default
             }

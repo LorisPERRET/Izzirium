@@ -11,8 +11,9 @@ import SwiftUI
 enum AquariumScreen: ZZScreenProtocol {
 
     case detail(AquariumUI, () -> Void)
+    case settings(AquariumUI, AlertUI?, () async -> Void)
     case list
-    case sensor(SensorType, [ChartValue], AquariumUI.AlertUI?)
+    case sensor(SensorType, [ChartValue], AlertUI?)
 
     // MARK: ScreenProtocol
 
@@ -20,6 +21,9 @@ enum AquariumScreen: ZZScreenProtocol {
         switch self {
         case .detail(let aquarium, _):
             "detail_\(aquarium.id)"
+
+        case .settings:
+            "settings"
 
         case .list:
             "list"
@@ -34,6 +38,16 @@ enum AquariumScreen: ZZScreenProtocol {
         switch self {
         case let .detail(aquarium, callback):
             AquariumView(viewModel: AquariumViewModel(aquarium: aquarium), reloadFavorite: callback)
+
+        case let .settings(aquarium, alert, callback):
+            SensorSettingsView(
+                viewModel: SensorSettingsViewModel(
+                    aquariumId: aquarium.id,
+                    aquariumName: aquarium.name,
+                    alert: alert,
+                    onSuccess: callback
+                )
+            )
 
         case .list:
             AquariumListView(viewModel: AquariumListViewModel())

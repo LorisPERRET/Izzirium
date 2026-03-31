@@ -12,7 +12,7 @@ enum AlertUIAdapter {
     // MARK: Typealias
 
     public typealias Input = Alert
-    public typealias Output = AquariumUI.AlertUI
+    public typealias Output = AlertUI
 
     // MARK: Adapter
 

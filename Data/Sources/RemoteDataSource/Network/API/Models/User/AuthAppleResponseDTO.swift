@@ -7,5 +7,5 @@
 
 struct AuthAppleResponseDTO: Codable, Sendable, Equatable {
     
-    var token: String
+    let token: String
 }

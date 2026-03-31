@@ -9,20 +9,11 @@ import Foundation
 
 struct LogDTO: Codable, Sendable, Equatable {
     
-    var id: Int
-    var date: Date
+    let id: Int
+    let date: Date
     
-    var ph: Float
-    var tds: Float
-    var turbidity: Float
-    var temperature: Float
-    
-    init(id: Int, date: Date, ph: Float, tds: Float, turbidity: Float, temperature: Float) {
-        self.id = id
-        self.date = date
-        self.ph = ph
-        self.tds = tds
-        self.turbidity = turbidity
-        self.temperature = temperature
-    }
+    let ph: Float
+    let tds: Float
+    let turbidity: Float
+    let temperature: Float
 }

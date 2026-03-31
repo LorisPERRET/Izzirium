@@ -17,6 +17,7 @@ protocol AquariumLocalDataSourceProtocol: Sendable {
     func getAquariums() -> [AquariumData]
     func getAquarium(byId id: Int) throws -> AquariumData
     func saveAquariums(aquariums: [AquariumData], deleteOther: Bool)
+    func save()
 }
 
 @InjectedMember(\.userDefaultsStorage, protocol: (any UserDefaultsStorageProtocol<UserDefaultsStorageKey>).self)
@@ -46,6 +47,10 @@ final class AquariumLocalDataSource: AquariumLocalDataSourceProtocol {
     
     func saveAquariums(aquariums: [AquariumData], deleteOther: Bool) {
         ZZDatabase.persistent.insertArray(aquariums, deleteOther: deleteOther)
+    }
+
+    func save() {
+        ZZDatabase.persistent.save()
     }
 }
 
