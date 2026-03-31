@@ -51,7 +51,7 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
                                     AnyZZScreen(
                                         AquariumScreen.settings(
                                             viewModel.aquarium,
-                                            viewModel.aquarium.alert
+                                            datas.alert
                                         ) {
                                             await viewModel.getDatas()
                                         }
@@ -178,7 +178,7 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
         )
     }
     
-    private func sensorStateIcon(min: Float, max: Float, value: Float) -> some View {
+    private func sensorStateIcon(min: Float?, max: Float?, value: Float) -> some View {
         Image(systemName: isWarning(min: min, max: max, value: value) ? "exclamationmark.triangle" : "checkmark.circle")
             .renderingMode(.template)
             .resizable()
@@ -197,7 +197,7 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
             }
     }
     
-    private func sensorAlertInfo(min: Float, max: Float, value: Float, type: SensorType) -> some View {
+    private func sensorAlertInfo(min: Float?, max: Float?, value: Float, type: SensorType) -> some View {
         VStack {
             Divider()
             
@@ -205,17 +205,32 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
                 Image(systemName: "exclamationmark.triangle")
                     .renderingMode(.template)
                     .foregroundStyle(isWarning(min: min, max: max, value: value) ? Color.dangerHight : Color.neutralLow)
-                ZZText(
-                    "Alertes: min \(min)\(type.unitLabel ?? "") • max \(max)\(type.unitLabel ?? "")",
-                    font: isWarning(min: min, max: max, value: value) ? .textSemiBoldXS : .textXS,
-                    foregroundColor: isWarning(min: min, max: max, value: value) ? Color.dangerHight : Color.neutralLow
-                )
+                
+                if let min, let max {
+                    ZZText(
+                        "Alertes: min \(min)\(type.unitLabel ?? "") • max \(max)\(type.unitLabel ?? "")",
+                        font: isWarning(min: min, max: max, value: value) ? .textSemiBoldXS : .textXS,
+                        foregroundColor: isWarning(min: min, max: max, value: value) ? Color.dangerHight : Color.neutralLow
+                    )
+                } else if let min {
+                    ZZText(
+                        "Alertes: min \(min)\(type.unitLabel ?? "")",
+                        font: isWarning(min: min, max: max, value: value) ? .textSemiBoldXS : .textXS,
+                        foregroundColor: isWarning(min: min, max: max, value: value) ? Color.dangerHight : Color.neutralLow
+                    )
+                } else if let max {
+                    ZZText(
+                        "Alertes: max \(max)\(type.unitLabel ?? "")",
+                        font: isWarning(min: min, max: max, value: value) ? .textSemiBoldXS : .textXS,
+                        foregroundColor: isWarning(min: min, max: max, value: value) ? Color.dangerHight : Color.neutralLow
+                    )
+                }
             }
             .padding(.top, .mu050)
         }
     }
     
-    private func sensorValue(alertValues: (Float, Float)?, value: Float, type: SensorType) -> some View {
+    private func sensorValue(alertValues: (Float?, Float?)?, value: Float, type: SensorType) -> some View {
         HStack(alignment: .bottom, spacing: MagicUnit.mu025.rawValue) {
             ZZText(
                 "\(value)",
@@ -226,7 +241,7 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
                     textStyle: .body
                 ),
                 foregroundColor: {
-                    if let (min, max) = alertValues {
+                    if let (min, max) = alertValues{
                         if isWarning(min: min, max: max, value: value) {
                             return Color.warningMedium
                         } else {
@@ -250,8 +265,17 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
         }
     }
     
-    private func isWarning(min: Float, max: Float, value: Float) -> Bool {
-        return !(min <= value && value <= max)
+    private func isWarning(min: Float?, max: Float?, value: Float) -> Bool {
+        if min != nil || max != nil {
+            if let min, value < min {
+                return true
+            }
+            
+            if let max, max < value {
+                return true
+            }
+        }
+        return false
     }
 }
 

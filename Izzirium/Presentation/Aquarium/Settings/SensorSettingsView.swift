@@ -109,7 +109,7 @@ struct SensorSettingsView<ViewModel>: View where ViewModel: SensorSettingsViewMo
         .zzShadow(.small)
     }
     
-    private func field(title: String, value: Float, type: SensorType, focusedValue: Field, onChange: @escaping (Float) -> Void) -> some View {
+    private func field(title: String, value: Float?, type: SensorType, focusedValue: Field, onChange: @escaping (Float?) -> Void) -> some View {
         VStack {
             ZZText(title, font: .textS)
             
@@ -117,12 +117,14 @@ struct SensorSettingsView<ViewModel>: View where ViewModel: SensorSettingsViewMo
                 ZZTextField(
                     value: Binding<String>(
                         get: {
-                            "\(value)"
+                            if let value {
+                                "\(value)"
+                            } else {
+                                ""
+                            }
                         },
                         set: { newValue in
-                            if let floatValue = Float(newValue) {
-                                onChange(floatValue)
-                            }
+                            onChange(Float(newValue))
                         }
                     ),
                     hasBeenSubmitted: false,

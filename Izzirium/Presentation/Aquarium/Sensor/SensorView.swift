@@ -23,8 +23,16 @@ struct SensorView: View {
     
     var isWarning: Bool? {
         guard let (min, max) = alert?.getValue(for: type) else { return nil }
-        if let last = values.last?.value {
-            return !(min <= last && last <= max)
+        if let last = values.last?.value, min != nil || max != nil {
+            if let min, last < min {
+                return true
+            }
+            
+            if let max, max < last {
+                return true
+            }
+            
+            return false
         } else {
             return nil
         }
@@ -97,13 +105,27 @@ struct SensorView: View {
             }
     }
     
-    private func alertValue(min: Float, max: Float) -> some View {
+    private func alertValue(min: Float?, max: Float?) -> some View {
         VStack {
-            ZZText(
-                "Plage normale: \(min)\(type.unitLabel ?? "") - \(max)\(type.unitLabel ?? "")",
-                font: .textS,
-                foregroundColor: Color.neutralMedium
-            )
+            if let min, let max {
+                ZZText(
+                    "Plage normale: \(min)\(type.unitLabel ?? "") - \(max)\(type.unitLabel ?? "")",
+                    font: .textS,
+                    foregroundColor: Color.neutralMedium
+                )
+            } else if let min {
+                ZZText(
+                    "Valeur min: \(min)\(type.unitLabel ?? "")",
+                    font: .textS,
+                    foregroundColor: Color.neutralMedium
+                )
+            } else if let max {
+                ZZText(
+                    "Valeur max: \(max)\(type.unitLabel ?? "")",
+                    font: .textS,
+                    foregroundColor: Color.neutralMedium
+                )
+            }
             
             if let isWarning, isWarning {
                 ZZText(
@@ -174,19 +196,23 @@ struct SensorView: View {
     private var chart: some View {
         Chart {
             if let (min, max) = alert?.getValue(for: type) {
-                // MAX line
-                RuleMark(
-                    y: .value("Max", max)
-                )
-                .foregroundStyle(Color.red)
-                .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
+                if let max {
+                    // MAX line
+                    RuleMark(
+                        y: .value("Max", max)
+                    )
+                    .foregroundStyle(Color.red)
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
+                }
                 
-                // MIN line
-                RuleMark(
-                    y: .value("Min", min)
-                )
-                .foregroundStyle(Color.red)
-                .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
+                if let min {
+                    // MIN line
+                    RuleMark(
+                        y: .value("Min", min)
+                    )
+                    .foregroundStyle(Color.red)
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
+                }
             }
             
             // Main line

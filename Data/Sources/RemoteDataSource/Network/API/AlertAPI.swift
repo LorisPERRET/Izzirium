@@ -17,6 +17,6 @@ protocol AlertAPI: Sendable {
     @GET("/alerts/:id")
     func getAlert(aquarium id: Int) async throws -> AlertDTO?
     
-    @POST("/alerts")
+    @PUT("/alerts")
     func updateAlert(alert: Body<AlertRequestDTO>) async throws -> AlertDTO
 }

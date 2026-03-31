@@ -7,19 +7,19 @@
 
 struct AlertUI {
     
-    var phMin: Float = 0
-    var phMax: Float = 0
+    var phMin: Float?
+    var phMax: Float?
     
-    var tdsMin: Float = 0
-    var tdsMax: Float = 0
+    var tdsMin: Float?
+    var tdsMax: Float?
     
-    var turbidityMin: Float = 0
-    var turbidityMax: Float = 0
+    var turbidityMin: Float?
+    var turbidityMax: Float?
     
-    var temperatureMin: Float = 0
-    var temperatureMax: Float = 0
+    var temperatureMin: Float?
+    var temperatureMax: Float?
     
-    func getValue(for type: SensorType) -> (min: Float, max: Float) {
+    func getValue(for type: SensorType) -> (min: Float?, max: Float?) {
         switch type {
         case .ph:
             return (self.phMin, self.phMax)
@@ -32,7 +32,7 @@ struct AlertUI {
         }
     }
     
-    mutating func setValue(for type: SensorType,  values: (min: Float, max: Float)) {
+    mutating func setValue(for type: SensorType,  values: (min: Float?, max: Float?)) {
         switch type {
         case .ph:
             phMin = values.min

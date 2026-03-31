@@ -9,28 +9,28 @@ public struct AlertRequestDTO: Codable, Sendable, Equatable {
     
     let aquariumId: Int
     
-    let phMin: Float
-    let phMax: Float
+    let phMin: Float?
+    let phMax: Float?
     
-    let tdsMin: Float
-    let tdsMax: Float
+    let tdsMin: Float?
+    let tdsMax: Float?
     
-    let turbidityMin: Float
-    let turbidityMax: Float
+    let turbidityMin: Float?
+    let turbidityMax: Float?
     
-    let temperatureMin: Float
-    let temperatureMax: Float
+    let temperatureMin: Float?
+    let temperatureMax: Float?
     
     public init(
         aquariumId: Int,
-        phMin: Float,
-        phMax: Float,
-        tdsMin: Float,
-        tdsMax: Float,
-        turbidityMin: Float,
-        turbidityMax: Float,
-        temperatureMin: Float,
-        temperatureMax: Float
+        phMin: Float?,
+        phMax: Float?,
+        tdsMin: Float?,
+        tdsMax: Float?,
+        turbidityMin: Float?,
+        turbidityMax: Float?,
+        temperatureMin: Float?,
+        temperatureMax: Float?
     ) {
         self.aquariumId = aquariumId
         self.phMin = phMin
