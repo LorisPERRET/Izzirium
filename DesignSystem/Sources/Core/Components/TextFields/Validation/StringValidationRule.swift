@@ -18,6 +18,12 @@ public struct StringValidationRule: ValidationRuleProtocol {
 
     // MARK: Properties
 
+    public static var isNotBlankOrEmpty: StringValidationRule {
+        .init(validationMessage: "Le champs ne doit pas être vide") { value in
+            StringValidationRule.valueContainsByRegex(value, regex: ".*\\S+.*")
+        }
+    }
+
     public let validationMessage: (String) -> String
     public let validate: ((String) -> Bool)
 

@@ -16,7 +16,8 @@ extension AquariumDTO {
         static var aquarium: AquariumDTO {
             AquariumDTO(
                 id: 0,
-                name: "Mon Aquarium de salon"
+                name: "Mon Aquarium de salon",
+                secretSensorId: "id"
             )
         }
         
@@ -24,15 +25,18 @@ extension AquariumDTO {
             [
                 AquariumDTO(
                     id: 0,
-                    name: "Mon Aquarium de salon"
+                    name: "Mon Aquarium de salon",
+                    secretSensorId: "id"
                 ),
                 AquariumDTO(
                     id: 1,
-                    name: "Mon Aquarium de bureau"
+                    name: "Mon Aquarium de bureau",
+                    secretSensorId: "id"
                 ),
                 AquariumDTO(
                     id: 2,
-                    name: "Mon Aquarium de garage"
+                    name: "Mon Aquarium de garage",
+                    secretSensorId: "id"
                 )
             ]
         }

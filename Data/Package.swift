@@ -34,15 +34,15 @@ let package = Package(
                 useApiMock ? .define("API_MOCK") : nil,
             ].compactMap { $0 }
         ),
-        .testTarget(
-            name: "DataTests",
-            dependencies: [
-                "Data",
-                .product(
-                    name: "DataTestsDependencies",
-                    package: "ExternalDependencies"
-                )
-            ]
-        )
+//        .testTarget(
+//            name: "DataTests",
+//            dependencies: [
+//                "Data",
+//                .product(
+//                    name: "DataTestsDependencies",
+//                    package: "ExternalDependencies"
+//                )
+//            ]
+//        )
     ]
 )

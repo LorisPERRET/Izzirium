@@ -11,4 +11,5 @@ struct AquariumDTO: Codable, Sendable, Equatable {
     
     let id: Int
     let name: String
+    let secretSensorId: String
 }

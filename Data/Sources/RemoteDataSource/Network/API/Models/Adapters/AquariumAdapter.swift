@@ -18,6 +18,7 @@ enum AquariumAdapter {
         Output(
             modelId: object.id,
             name: object.name,
+            secretSensorId: object.secretSensorId,
             logs: [],
             alert: nil
         )

@@ -44,28 +44,8 @@ final class LogRemoteDataSource: LogRemoteDataSourceProtocol {
     // MARK: - LogRemoteDataSourceProtocol
     
     func fetchLogs(aquarium id: Int) async throws -> [LogDTO] {
-        do {
+        try await APIUtils.request("fetchLogs", logger: logger) {
             return try await api.getLogs(aquarium: id)
-        } catch let error as PapyrusError {
-            logger.error("FetchLogs failed: \(error.message)")
-
-            guard let response = error.response, let statusCode = response.statusCode else {
-                throw DataError.network
-            }
-
-            if statusCode == 401 {
-                throw DataError.invalidCredentials
-            }
-
-            logger.error("FetchLogs status code: \(statusCode)")
-
-            throw DataError.network
-        } catch let error as DecodingError {
-            logger.error(error.localizedDescription)
-            throw DataError.decoding
-        } catch {
-            logger.error(error.localizedDescription)
-            throw DataError.network
         }
     }
 }

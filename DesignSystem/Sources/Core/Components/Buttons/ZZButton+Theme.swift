@@ -24,7 +24,7 @@ extension ZZButton {
         var foregroundColor: Color {
             switch self {
             case .primary:
-                Color.primaryHight
+                Color.lightHightest
             case .secondary, .tag:
                 Color.neutralMedium
             case .tertiary:
@@ -41,7 +41,7 @@ extension ZZButton {
         var foregroundPressedColor: Color {
             switch self {
             case .primary:
-                Color.primaryHight
+                Color.neutralLowest
             case .secondary, .tag:
                 Color.neutralMedium
             case .tertiary:
@@ -58,7 +58,7 @@ extension ZZButton {
         var foregroundDisabledColor: Color {
             switch self {
             case .primary:
-                Color.neutralLow
+                Color.neutralLowest
             case .secondary, .tag:
                 Color.neutralLow
             case .tertiary:

@@ -72,7 +72,7 @@ final class UserRemoteDataSource: UserRemoteDataSourceProtocol {
     // MARK: - UserRemoteDataSourceProtocol
     
     func authApple(identityToken: String, email: String?) async throws {
-        do {
+        try await APIUtils.request("authApple", logger: logger) {
             let newEmail: String
             if let email {
                 newEmail = email
@@ -88,58 +88,12 @@ final class UserRemoteDataSource: UserRemoteDataSourceProtocol {
             let response = try await unauthenticatedAPI.authApple(identityToken: identityToken, email: newEmail)
             try await keychainStorage.setString(value: response.token, forKey: .accessToken)
             
-        } catch let error as PapyrusError {
-            logger.error("authApple failed: \(error.message)")
-
-            guard let response = error.response, let statusCode = response.statusCode else {
-                throw DataError.network
-            }
-
-            if statusCode == 401 {
-                throw DataError.invalidCredentials
-            }
-
-            logger.error("authApple status code: \(statusCode)")
-
-            throw DataError.network
-        } catch let error as DecodingError {
-            logger.error(error.localizedDescription)
-            throw DataError.decoding
-        } catch {
-            logger.error(error.localizedDescription)
-            throw DataError.network
         }
     }
     
     func postDeviceToken(token: String) async throws {
-        do {
+        try await APIUtils.request("postDeviceToken", logger: logger) {
             return try await authenticatedAPI.postDeviceToken(token: token)
-        } catch let error as AFError {
-            if case .responseSerializationFailed(reason: .inputDataNilOrZeroLength) = error {
-                // The endpoint returns HTTP 200 with an empty body. Treat that as success.
-                return
-            }
-            throw DataError.network
-        } catch let error as PapyrusError {
-            logger.error("postDeviceToken failed: \(error.message)")
-
-            guard let response = error.response, let statusCode = response.statusCode else {
-                throw DataError.network
-            }
-
-            if statusCode == 401 {
-                throw DataError.invalidCredentials
-            }
-
-            logger.error("postDeviceToken status code: \(statusCode)")
-
-            throw DataError.network
-        } catch let error as DecodingError {
-            logger.error(error.localizedDescription)
-            throw DataError.decoding
-        } catch {
-            logger.error(error.localizedDescription)
-            throw DataError.network
         }
     }
 }

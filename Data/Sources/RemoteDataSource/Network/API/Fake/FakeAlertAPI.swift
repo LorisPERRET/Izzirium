@@ -19,8 +19,12 @@ final class FakeAlertAPI: AlertAPI {
     let sleepTime: UInt64 = 2_000_000_000
 
     // MARK: - LogAPI
-    
-    func getAlert(aquarium id: Int) async throws -> AlertDTO {
+
+    func getAlert(aquarium id: Int) async throws -> AlertDTO? {
+        AlertDTO.Fake.preview
+    }
+
+    func updateAlert(alert: PapyrusCore.Body<AlertRequestDTO>) async throws -> AlertDTO {
         AlertDTO.Fake.preview
     }
 }

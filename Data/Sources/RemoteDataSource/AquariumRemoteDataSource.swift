@@ -11,6 +11,7 @@ import SKDependencyInjection
 protocol AquariumRemoteDataSourceProtocol: Sendable {
 
     func fetchAquariums() async throws-> [AquariumDTO]
+    func createAquarium(name: String) async throws-> AquariumDTO
 }
 
 @Singleton
@@ -44,28 +45,14 @@ final class AquariumRemoteDataSource: AquariumRemoteDataSourceProtocol {
     // MARK: - AquariumRemoteDataSourceProtocol
 
     func fetchAquariums() async throws -> [AquariumDTO] {
-        do {
+        try await APIUtils.request("fetchAquariums", logger: logger) {
             return try await api.getAquariums()
-        } catch let error as PapyrusError {
-            logger.error("FetchAquariums failed: \(error.message)")
+        }
+    }
 
-            guard let response = error.response, let statusCode = response.statusCode else {
-                throw DataError.network
-            }
-
-            if statusCode == 401 {
-                throw DataError.invalidCredentials
-            }
-
-            logger.error("FetchAquariums status code: \(statusCode)")
-
-            throw DataError.network
-        } catch let error as DecodingError {
-            logger.error(error.localizedDescription)
-            throw DataError.decoding
-        } catch {
-            logger.error(error.localizedDescription)
-            throw DataError.network
+    func createAquarium(name: String) async throws-> AquariumDTO {
+        try await APIUtils.request("createAquarium", logger: logger) {
+            return try await api.createAquarium(name: name)
         }
     }
 }

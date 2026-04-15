@@ -23,6 +23,10 @@ final class FakeAquariumAPI: AquariumAPI {
     func getAquariums() async throws -> [AquariumDTO] {
         AquariumDTO.Fake.list
     }
+
+    func createAquarium(name: String) async throws -> AquariumDTO {
+        AquariumDTO(id: 0, name: name, secretSensorId: "azertyuiop")
+    }
 }
 
 #endif

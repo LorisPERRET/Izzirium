@@ -14,6 +14,8 @@ enum AquariumScreen: ZZScreenProtocol {
     case settings(AquariumUI, AlertUI?, () async -> Void)
     case list
     case sensor(SensorType, [ChartValue], AlertUI?)
+    case create
+    case configure(String)
 
     // MARK: ScreenProtocol
 
@@ -30,6 +32,12 @@ enum AquariumScreen: ZZScreenProtocol {
             
         case .sensor(let type, _, _):
             "sensor_\(type.title)"
+
+        case .create:
+            "create"
+
+        case .configure:
+            "configure"
         }
     }
 
@@ -54,6 +62,12 @@ enum AquariumScreen: ZZScreenProtocol {
             
         case let .sensor(type, values, alert):
             SensorView(type: type, values: values, alert: alert)
+
+        case .create:
+            CreateAquariumView(viewModel: CreateAquariumViewModel())
+
+        case .configure(let token):
+            ConfigurationView(viewModel: ConfigurationViewModel(sensorId: token))
         }
     }
 

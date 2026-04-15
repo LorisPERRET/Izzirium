@@ -45,54 +45,14 @@ final class AlertRemoteDataSource: AlertRemoteDataSourceProtocol {
     // MARK: - AlertRemoteDataSourceProtocol
     
     func fetchAlert(aquarium id: Int) async throws -> AlertDTO? {
-        do {
-            return try await api.getAlert(aquarium: id)
-        } catch let error as PapyrusError {
-            logger.error("FetchAlerts failed: \(error.message)")
-
-            guard let response = error.response, let statusCode = response.statusCode else {
-                throw DataError.network
-            }
-
-            if statusCode == 401 {
-                throw DataError.invalidCredentials
-            }
-
-            logger.error("FetchAlerts status code: \(statusCode)")
-
-            throw DataError.network
-        } catch let error as DecodingError {
-            logger.error(error.localizedDescription)
-            throw DataError.decoding
-        } catch {
-            logger.error(error.localizedDescription)
-            throw DataError.network
+        try await APIUtils.request("fetchAlert", logger: logger) {
+            try await api.getAlert(aquarium: id)
         }
     }
     
     func updateAlert(alert: AlertRequestDTO) async throws -> AlertDTO {
-        do {
+        try await APIUtils.request("updateAlert", logger: logger) {
             return try await api.updateAlert(alert: alert)
-        } catch let error as PapyrusError {
-            logger.error("UpdateAlert failed: \(error.message)")
-
-            guard let response = error.response, let statusCode = response.statusCode else {
-                throw DataError.network
-            }
-
-            if statusCode == 401 {
-                throw DataError.invalidCredentials
-            }
-
-            logger.error("UpdateAlert status code: \(statusCode)")
-
-            throw DataError.network
-        } catch let error as DecodingError {
-            logger.error(error.localizedDescription)
-            throw DataError.decoding
-        } catch {
-            logger.error(error.localizedDescription)
-            throw DataError.network
         }
     }
 }

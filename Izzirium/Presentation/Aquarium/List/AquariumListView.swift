@@ -63,6 +63,17 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
                 await viewModel.fetchAquariums()
                 await viewModel.fetchFavorite()
             }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        navigationPath.append(AnyZZScreen(AquariumScreen.create))
+                    } label: {
+                        Image(systemName: "plus")
+                            .renderingMode(.template)
+                            .foregroundStyle(Color.primaryMedium)
+                    }
+                }
+            }
         }
     }
     

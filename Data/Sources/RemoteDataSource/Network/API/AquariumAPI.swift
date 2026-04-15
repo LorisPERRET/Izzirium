@@ -16,4 +16,7 @@ protocol AquariumAPI: Sendable {
 
     @GET("/aquariums")
     func getAquariums() async throws -> [AquariumDTO]
+
+    @POST("/aquariums")
+    func createAquarium(name: String) async throws -> AquariumDTO
 }

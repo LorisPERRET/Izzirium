@@ -15,7 +15,8 @@ public final class AquariumData: ModelIdentifiable {
     
     @Attribute(.unique) public var modelId: Int
     public var name: String
-    
+    public var secretSensorId: String
+
     @Relationship(deleteRule: .cascade, inverse: \LogData.aquarium)
     public var logs: [LogData]
     
@@ -24,9 +25,10 @@ public final class AquariumData: ModelIdentifiable {
     
     // MARK: - Init
     
-    public init(modelId: Int, name: String, logs: [LogData], alert: AlertData?) {
+    public init(modelId: Int, name: String, secretSensorId: String, logs: [LogData], alert: AlertData?) {
         self.modelId = modelId
         self.name = name
+        self.secretSensorId = secretSensorId
         self.logs = logs
         self.alert = alert
     }
