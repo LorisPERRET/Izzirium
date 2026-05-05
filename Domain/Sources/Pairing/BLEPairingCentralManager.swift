@@ -58,9 +58,13 @@ final class BlePairingCentralManager: NSObject, BlePairingCentralManagerProtocol
     private var peripheralByIdentifier: [String: CBPeripheral] = [:]
     private var currentPeripheral: CBPeripheral?
     private var wifiConfigurationCharacteristic: CBCharacteristic?
+    private var provisioningStatusCharacteristic: CBCharacteristic?
     private var connectContinuation: CheckedContinuation<Void, Error>?
     private var characteristicDiscoveryContinuation: CheckedContinuation<Void, Error>?
     private var writeContinuation: CheckedContinuation<Void, Error>?
+    private var provisioningStatusContinuation: CheckedContinuation<PairingProvisioningStatus, Error>?
+    private var provisioningStatusTimeoutWorkItem: DispatchWorkItem?
+    private var pendingProvisioningStatus: PairingProvisioningStatus?
 
     init(
         configuration: BLEPairingConfiguration = .default
@@ -103,6 +107,8 @@ final class BlePairingCentralManager: NSObject, BlePairingCentralManagerProtocol
 
         currentPeripheral = peripheral
         wifiConfigurationCharacteristic = nil
+        provisioningStatusCharacteristic = nil
+        pendingProvisioningStatus = nil
         centralManager.connect(peripheral, options: nil)
 
         try await withCheckedThrowingContinuation { continuation in
@@ -156,7 +162,34 @@ final class BlePairingCentralManager: NSObject, BlePairingCentralManagerProtocol
     }
 
     func readProvisioningStatus() async throws -> PairingProvisioningStatus {
-        .completed
+        guard let currentPeripheral else {
+            throw PairingError.deviceNotFound
+        }
+
+        guard let provisioningStatusCharacteristic else {
+            throw PairingError.provisioningFailed(reason: "Characteristic de statut introuvable.")
+        }
+
+        if let pendingProvisioningStatus {
+            self.pendingProvisioningStatus = nil
+            return pendingProvisioningStatus
+        }
+
+        if provisioningStatusCharacteristic.isNotifying == false {
+            currentPeripheral.setNotifyValue(true, for: provisioningStatusCharacteristic)
+        }
+        provisioningStatusTimeoutWorkItem?.cancel()
+
+        return try await withCheckedThrowingContinuation { continuation in
+            provisioningStatusContinuation = continuation
+
+            let timeoutWorkItem = DispatchWorkItem { [weak self] in
+                self?.resumeProvisioningStatusContinuation(with: .failure(PairingError.timeout))
+            }
+
+            provisioningStatusTimeoutWorkItem = timeoutWorkItem
+            DispatchQueue.main.asyncAfter(deadline: .now() + 15, execute: timeoutWorkItem)
+        }
     }
 }
 
@@ -238,7 +271,17 @@ extension BlePairingCentralManager: CBCentralManagerDelegate {
             currentPeripheral = nil
             connectedDevice = nil
             wifiConfigurationCharacteristic = nil
+            provisioningStatusCharacteristic = nil
+            pendingProvisioningStatus = nil
         }
+
+        resumeProvisioningStatusContinuation(
+            with: .failure(
+                PairingError.connectionFailed(
+                    reason: error?.localizedDescription ?? "La connexion Bluetooth a ete interrompue."
+                )
+            )
+        )
 
         if let error {
             logger.error("Disconnected from peripheral with error: \(error.localizedDescription)")
@@ -273,15 +316,26 @@ extension BlePairingCentralManager: CBPeripheralDelegate {
             return
         }
 
-        if let characteristic = service.characteristics?.first(where: {
+        if let wifiCharacteristic = service.characteristics?.first(where: {
             $0.uuid == CBUUID(string: configuration.characteristics.wifiConfigurationWrite)
         }) {
-            wifiConfigurationCharacteristic = characteristic
-            logger.info("Wi-Fi write characteristic found: \(characteristic.uuid.uuidString)")
+            wifiConfigurationCharacteristic = wifiCharacteristic
+            logger.info("Wi-Fi write characteristic found: \(wifiCharacteristic.uuid.uuidString)")
+        }
+
+        if let statusCharacteristic = service.characteristics?.first(where: {
+            $0.uuid == CBUUID(string: configuration.characteristics.provisioningStatus)
+        }) {
+            provisioningStatusCharacteristic = statusCharacteristic
+            logger.info("Provisioning status characteristic found: \(statusCharacteristic.uuid.uuidString)")
+            peripheral.setNotifyValue(true, for: statusCharacteristic)
+        }
+
+        if wifiConfigurationCharacteristic != nil, provisioningStatusCharacteristic != nil {
             characteristicDiscoveryContinuation?.resume()
             characteristicDiscoveryContinuation = nil
         } else if service.uuid == CBUUID(string: configuration.serviceUUIDs.first ?? "") {
-            logger.error("Wi-Fi write characteristic not found in service \(service.uuid.uuidString)")
+            logger.error("Required pairing characteristics not found in service \(service.uuid.uuidString)")
         }
     }
 
@@ -302,6 +356,53 @@ extension BlePairingCentralManager: CBPeripheralDelegate {
         logger.info("Wi-Fi payload written on \(characteristic.uuid.uuidString)")
         writeContinuation?.resume()
         writeContinuation = nil
+    }
+
+    func peripheral(
+        _ peripheral: CBPeripheral,
+        didUpdateNotificationStateFor characteristic: CBCharacteristic,
+        error: Error?
+    ) {
+        _ = peripheral
+
+        if let error {
+            logger.error("didUpdateNotificationStateFor \(characteristic.uuid.uuidString) failed: \(error.localizedDescription)")
+            resumeProvisioningStatusContinuation(with: .failure(PairingError.provisioningFailed(reason: error.localizedDescription)))
+            return
+        }
+
+        logger.info("Notification state updated for \(characteristic.uuid.uuidString): \(characteristic.isNotifying)")
+    }
+
+    func peripheral(
+        _ peripheral: CBPeripheral,
+        didUpdateValueFor characteristic: CBCharacteristic,
+        error: Error?
+    ) {
+        _ = peripheral
+
+        if let error {
+            logger.error("didUpdateValueFor \(characteristic.uuid.uuidString) failed: \(error.localizedDescription)")
+            resumeProvisioningStatusContinuation(with: .failure(PairingError.provisioningFailed(reason: error.localizedDescription)))
+            return
+        }
+
+        guard characteristic.uuid == CBUUID(string: configuration.characteristics.provisioningStatus) else {
+            return
+        }
+
+        guard let status = decodeProvisioningStatus(from: characteristic.value) else {
+            logger.info("Ignoring empty provisioning status on \(characteristic.uuid.uuidString)")
+            return
+        }
+        logger.info("Provisioning status received on \(characteristic.uuid.uuidString): \(String(describing: status))")
+
+        if provisioningStatusContinuation == nil {
+            pendingProvisioningStatus = status
+            return
+        }
+
+        resumeProvisioningStatusContinuation(with: .success(status))
     }
 }
 
@@ -334,6 +435,80 @@ private extension BlePairingCentralManager {
             discoveredDevices.sort { $0.rssi > $1.rssi }
         }
     }
+
+    func decodeProvisioningStatus(from data: Data?) -> PairingProvisioningStatus? {
+        guard let data, data.isEmpty == false else {
+            return nil
+        }
+
+        if let rawStatus = String(data: data, encoding: .utf8)?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased(),
+           rawStatus.isEmpty == false {
+            let normalizedStatus = rawStatus.replacingOccurrences(of: " ", with: "")
+            let components = normalizedStatus
+                .split(separator: ":")
+                .map(String.init)
+
+            let lastComponent = components.last ?? normalizedStatus
+
+            switch lastComponent {
+            case "1", "ok", "success", "completed", "complete", "true":
+                return .completed
+            case "0", "error", "failed", "failure", "false", "fail":
+                if components.count > 2 {
+                    let reason = components.dropFirst().joined(separator: ":")
+                    return .failed(reason: reason)
+                }
+                return .failed(reason: "La configuration a ete refusee par le capteur.")
+            case "sending", "sendingcredentials":
+                return .sendingCredentials
+            case "connecting", "connectingtonetwork":
+                return .connectingToNetwork
+            case "registering", "registeringtobackend":
+                return .registeringToBackend
+            default:
+                switch normalizedStatus {
+                case "wifi:ok":
+                    return .completed
+                case "wifi:fail", "wifi:error", "wifi:failed":
+                    return .failed(reason: "La configuration Wi-Fi a echoue.")
+                default:
+                    return .failed(reason: rawStatus)
+                }
+            }
+        }
+
+        if let firstByte = data.first {
+            return switch firstByte {
+            case 1:
+                .completed
+            case 0:
+                .failed(reason: "La configuration a ete refusee par le capteur.")
+            default:
+                .failed(reason: "Statut de configuration inconnu: \(firstByte)")
+            }
+        }
+
+        return .failed(reason: "Impossible de lire le statut de configuration.")
+    }
+
+    func resumeProvisioningStatusContinuation(
+        with result: Result<PairingProvisioningStatus, Error>
+    ) {
+        provisioningStatusTimeoutWorkItem?.cancel()
+        provisioningStatusTimeoutWorkItem = nil
+
+        guard let provisioningStatusContinuation else { return }
+        self.provisioningStatusContinuation = nil
+
+        switch result {
+        case .success(let status):
+            provisioningStatusContinuation.resume(returning: status)
+        case .failure(let error):
+            provisioningStatusContinuation.resume(throwing: error)
+        }
+    }
 }
 
 private extension BLEPairingConfiguration {
@@ -345,7 +520,7 @@ private extension BLEPairingConfiguration {
         characteristics: .init(
             deviceInfo: "0000FFF1-0000-1000-8000-00805F9B34FB",
             wifiConfigurationWrite: "beb5483e-36e1-4688-b7f5-ea07361b26a8",
-            provisioningStatus: "0000FFF4-0000-1000-8000-00805F9B34FB"
+            provisioningStatus: "1439cab0-6639-4a51-afe1-488287674326"
         ),
         deviceNamePrefix: nil
     )

@@ -112,15 +112,22 @@ final class PairingManager: ObservableObject, PairingManagerProtocol, @unchecked
 
         do {
             try await blePairingCentralManager.sendProvisioning(credentials)
-            let status = try await blePairingCentralManager.readProvisioningStatus()
-
-            if case .failed(let reason) = status {
-                let error = PairingError.provisioningFailed(reason: reason)
-                pairingState = .failed(error)
-                throw error
-            }
             
-            pairingState = .success
+            while true {
+                let status = try await blePairingCentralManager.readProvisioningStatus()
+
+                switch status {
+                case .completed:
+                    pairingState = .success
+                    return
+                case .failed(let reason):
+                    let error = PairingError.provisioningFailed(reason: reason)
+                    pairingState = .failed(error)
+                    throw error
+                case .idle, .sendingCredentials, .connectingToNetwork, .registeringToBackend:
+                    continue
+                }
+            }
         } catch let error as PairingError {
             pairingState = .failed(error)
             throw error
