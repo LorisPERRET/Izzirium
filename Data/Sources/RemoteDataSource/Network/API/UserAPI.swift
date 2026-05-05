@@ -17,6 +17,9 @@ protocol UserAPI: Sendable {
     @POST("/auth/apple")
     func authApple(identityToken: String, email: String) async throws -> AuthAppleResponseDTO
     
+    @POST("/auth/refresh")
+    func authRefresh(refreshToken: String) async throws -> AuthAppleResponseDTO
+    
     @POST("/device-tokens")
     func postDeviceToken(token: String) async throws
 }

@@ -13,7 +13,9 @@ public protocol UserRepositoryProtocol: Sendable {
     
     func setUserId(_ id: String?) async
     func getUserId() async -> String?
+    func isLoginExpired() async -> Bool
     func authApple(identityToken: String, email: String?) async throws
+    func refreshToken() async throws
     func postDeviceToken(token: String) async throws
 }
 
@@ -31,8 +33,21 @@ final class UserRepository: UserRepositoryProtocol {
         await userLocalDataSource.getUserId()
     }
     
+    func isLoginExpired() async -> Bool {
+        guard let date = await userLocalDataSource.getAccessTokenExpirationDate() else {
+            return true
+        }
+        
+        let now = Date()
+        return now > date
+    }
+    
     func authApple(identityToken: String, email: String?) async throws {
         try await userRemoteDataSource.authApple(identityToken: identityToken, email: email)
+    }
+    
+    func refreshToken() async throws {
+        try await userRemoteDataSource.refreshToken()
     }
 
     func postDeviceToken(token: String) async throws {

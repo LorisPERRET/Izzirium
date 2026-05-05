@@ -16,6 +16,7 @@ protocol AquariumLocalDataSourceProtocol: Sendable {
     func getFavoriteAquariumId() async -> Int?
     func getAquariums() -> [AquariumData]
     func getAquarium(byId id: Int) throws -> AquariumData
+    func deleteAquarium(byId id: Int) throws
     func saveAquariums(aquariums: [AquariumData], deleteOther: Bool)
     func save()
 }
@@ -43,6 +44,11 @@ final class AquariumLocalDataSource: AquariumLocalDataSourceProtocol {
     
     func getAquarium(byId id: Int) throws -> AquariumData {
         try ZZDatabase.persistent.getAquariumById(id: id)
+    }
+
+    func deleteAquarium(byId id: Int) throws {
+        let aquarium = try getAquarium(byId: id)
+        ZZDatabase.persistent.delete(aquarium)
     }
     
     func saveAquariums(aquariums: [AquariumData], deleteOther: Bool) {

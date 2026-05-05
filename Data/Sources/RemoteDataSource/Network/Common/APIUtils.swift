@@ -29,6 +29,20 @@ enum APIUtils {
         } catch let error as DecodingError {
             logger.error(error.localizedDescription)
             throw DataError.decoding
+        } catch let error as AFError {
+            logger.error("\(functionName) failed: \(error.errorDescription ?? "unknown error")")
+            
+            guard let statusCode = error.responseCode else {
+                throw DataError.network
+            }
+            
+            logger.error("\(functionName) status code: \(statusCode)")
+            
+            if statusCode == 401 {
+                throw DataError.invalidCredentials
+            }
+            
+            throw DataError.decoding
         } catch {
             logger.error(error.localizedDescription)
             throw DataError.network
@@ -44,16 +58,30 @@ enum APIUtils {
             guard let response = error.response, let statusCode = response.statusCode else {
                 throw DataError.network
             }
-
+            
+            logger.error("\(functionName) status code: \(statusCode)")
+            
             if statusCode == 401 {
                 throw DataError.invalidCredentials
             }
 
-            logger.error("\(functionName) status code: \(statusCode)")
-
             throw DataError.network
         } catch let error as DecodingError {
             logger.error(error.localizedDescription)
+            throw DataError.decoding
+        } catch let error as AFError {
+            logger.error("\(functionName) failed: \(error.errorDescription ?? "unknown error")")
+            
+            guard let statusCode = error.responseCode else {
+                throw DataError.network
+            }
+            
+            logger.error("\(functionName) status code: \(statusCode)")
+            
+            if statusCode == 401 {
+                throw DataError.invalidCredentials
+            }
+            
             throw DataError.decoding
         } catch {
             logger.error(error.localizedDescription)

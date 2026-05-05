@@ -27,6 +27,8 @@ final class FakeAquariumAPI: AquariumAPI {
     func createAquarium(name: String) async throws -> AquariumDTO {
         AquariumDTO(id: 0, name: name, secretSensorId: "azertyuiop")
     }
+
+    func deleteAquarium(aquarium id: Int) async throws {}
 }
 
 #endif

@@ -159,7 +159,7 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
                 if let value = values.last?.value {
                     sensorValue(alertValues: alertValues, value: value, type: type)
                     
-                    if let (min, max) = alertValues {
+                    if let (min, max) = alertValues, min != nil || max != nil {
                         sensorAlertInfo(min: min, max: max, value: value, type: type)
                     }
                 } else {

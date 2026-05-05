@@ -177,9 +177,9 @@ struct SensorView: View {
                         }
                     }
                     
-                    Divider()
-                    
-                    if let (min, max) = alert?.getValue(for: type) {
+                    if let (min, max) = alert?.getValue(for: type), min != nil || max != nil {
+                        Divider()
+                        
                         alertValue(min: min, max: max)
                     }
                 }

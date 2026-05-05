@@ -19,4 +19,7 @@ protocol AquariumAPI: Sendable {
 
     @POST("/aquariums")
     func createAquarium(name: String) async throws -> AquariumDTO
+
+    @DELETE("/aquariums/:id")
+    func deleteAquarium(aquarium id: Int) async throws
 }

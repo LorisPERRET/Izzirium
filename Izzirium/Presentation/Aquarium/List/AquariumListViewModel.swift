@@ -17,12 +17,16 @@ protocol AquariumListViewModelProtocol: ObservableObject {
     
     var dataListState: SKLoadingState<[AquariumUI]> { get }
     var dataFavoriteState: SKLoadingState<AquariumUI?> { get }
+    var deleteRequestState: SKDataRequestState<Void> { get }
+    var deleteRequestStatePublisher: SKDataRequestStatePublisher<Void> { get }
     
     func fetchAquariums() async
     func fetchFavorite() async
+    func deleteAquarium(id: Int) async
 }
 
 @InjectedMember(\.getAquariumsUseCase)
+@InjectedMember(\.deleteAquariumUseCase)
 @InjectedMember(\.getFavoriteAquariumUseCase)
 final class AquariumListViewModel: AquariumListViewModelProtocol {
     
@@ -30,6 +34,10 @@ final class AquariumListViewModel: AquariumListViewModelProtocol {
     
     @Published private(set) var dataListState: SKLoadingState<[AquariumUI]> = .loading
     @Published private(set) var dataFavoriteState: SKLoadingState<AquariumUI?> = .loading
+    @Published private(set) var deleteRequestState: SKDataRequestState<Void> = .idle
+    var deleteRequestStatePublisher: SKDataRequestStatePublisher<Void> {
+        $deleteRequestState
+    }
 
     private let logger = Logger(category: AquariumListViewModel.self)
 
@@ -55,5 +63,18 @@ final class AquariumListViewModel: AquariumListViewModelProtocol {
         
         let aquarium = await getFavoriteAquariumUseCase.perform()
         dataFavoriteState = .loaded(aquarium.map(AquariumUIAdapter.convert))
+    }
+    
+    func deleteAquarium(id: Int) async {
+        logger.info("deleteAquarium")
+        
+        deleteRequestState = .loading
+        
+        do {
+            try await deleteAquariumUseCase.perform(id: id)
+            deleteRequestState = .success(())
+        } catch {
+            deleteRequestState = .error(error)
+        }
     }
 }

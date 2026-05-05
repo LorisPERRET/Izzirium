@@ -34,7 +34,7 @@ protocol ConfigurationViewModelProtocol: ObservableObject {
 
 @InjectedMember(\.pairingManager)
 @MainActor
-final class ConfigurationViewModel: NSObject, ConfigurationViewModelProtocol {
+final class ConfigurationViewModel: ConfigurationViewModelProtocol {
 
     // MARK: - Properties
 
@@ -44,8 +44,6 @@ final class ConfigurationViewModel: NSObject, ConfigurationViewModelProtocol {
     @Published var wifiSSID = ""
     @Published var wifiPassword = ""
     private let sensorId: String
-    private let locationManager = CLLocationManager()
-    private var didRequestLocationAuthorization = false
 
     @Published private(set) var bleRequestState: SKDataRequestState<Void> = .idle
     var bleRequestStatePublisher: SKDataRequestStatePublisher<Void> {
@@ -61,8 +59,6 @@ final class ConfigurationViewModel: NSObject, ConfigurationViewModelProtocol {
 
     init(sensorId: String) {
         self.sensorId = sensorId
-        super.init()
-        locationManager.delegate = self
         bindPairingManager()
         fetchCurrentSSID()
     }
@@ -140,19 +136,6 @@ final class ConfigurationViewModel: NSObject, ConfigurationViewModelProtocol {
     }
 
     private func fetchCurrentSSID() {
-        switch locationManager.authorizationStatus {
-        case .authorizedAlways, .authorizedWhenInUse:
-            break
-        case .notDetermined:
-            requestLocationAuthorization()
-            return
-        case .denied, .restricted:
-            logger.info("Location authorization unavailable, cannot fetch current SSID")
-            return
-        @unknown default:
-            return
-        }
-
         NEHotspotNetwork.fetchCurrent { [weak self] network in
             guard let self, let ssid = network?.ssid, ssid.isEmpty == false else { return }
 
@@ -184,29 +167,5 @@ final class ConfigurationViewModel: NSObject, ConfigurationViewModelProtocol {
         }
 
         throw PairingError.timeout
-    }
-
-    private func requestLocationAuthorization() {
-        guard didRequestLocationAuthorization == false else { return }
-        didRequestLocationAuthorization = true
-        locationManager.requestWhenInUseAuthorization()
-    }
-}
-
-extension ConfigurationViewModel: CLLocationManagerDelegate {
-
-    nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        Task { @MainActor in
-            switch manager.authorizationStatus {
-            case .authorizedAlways, .authorizedWhenInUse:
-                fetchCurrentSSID()
-            case .notDetermined:
-                break
-            case .denied, .restricted:
-                logger.info("Location authorization denied, current SSID unavailable")
-            @unknown default:
-                break
-            }
-        }
     }
 }

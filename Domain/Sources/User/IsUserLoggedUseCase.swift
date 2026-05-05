@@ -29,6 +29,11 @@ final class IsUserLoggedUseCase: IsUserLoggedUseCaseProtocol {
             
             switch state {
             case .authorized:
+                let isExpired = await userRepository.isLoginExpired()
+                if isExpired {
+                    try await userRepository.refreshToken()
+                }
+                
                 return true
             default:
                 return false

@@ -12,6 +12,7 @@ protocol AquariumRemoteDataSourceProtocol: Sendable {
 
     func fetchAquariums() async throws-> [AquariumDTO]
     func createAquarium(name: String) async throws-> AquariumDTO
+    func deleteAquarium(id: Int) async throws
 }
 
 @Singleton
@@ -53,6 +54,12 @@ final class AquariumRemoteDataSource: AquariumRemoteDataSourceProtocol {
     func createAquarium(name: String) async throws-> AquariumDTO {
         try await APIUtils.request("createAquarium", logger: logger) {
             return try await api.createAquarium(name: name)
+        }
+    }
+
+    func deleteAquarium(id: Int) async throws {
+        try await APIUtils.request("deleteAquarium", logger: logger) {
+            try await api.deleteAquarium(aquarium: id)
         }
     }
 }

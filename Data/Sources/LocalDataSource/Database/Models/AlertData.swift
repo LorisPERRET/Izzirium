@@ -16,17 +16,17 @@ public final class AlertData: ModelIdentifiable {
     @Attribute(.unique) public var modelId: Int
     public var aquariumId: Int
     
-    public var phMin: Float
-    public var phMax: Float
+    public var phMin: Float?
+    public var phMax: Float?
     
-    public var tdsMin: Float
-    public var tdsMax: Float
+    public var tdsMin: Float?
+    public var tdsMax: Float?
     
-    public var turbidityMin: Float
-    public var turbidityMax: Float
+    public var turbidityMin: Float?
+    public var turbidityMax: Float?
     
-    public var temperatureMin: Float
-    public var temperatureMax: Float
+    public var temperatureMin: Float?
+    public var temperatureMax: Float?
     
     var aquarium: AquariumData?
     
@@ -35,14 +35,14 @@ public final class AlertData: ModelIdentifiable {
     public init(
         modelId: Int,
         aquariumId: Int,
-        phMin: Float,
-        phMax: Float,
-        tdsMin: Float,
-        tdsMax: Float,
-        turbidityMin: Float,
-        turbidityMax: Float,
-        temperatureMin: Float,
-        temperatureMax: Float
+        phMin: Float?,
+        phMax: Float?,
+        tdsMin: Float?,
+        tdsMax: Float?,
+        turbidityMin: Float?,
+        turbidityMax: Float?,
+        temperatureMin: Float?,
+        temperatureMax: Float?
     ) {
         self.modelId = modelId
         self.aquariumId = aquariumId

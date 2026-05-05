@@ -11,6 +11,8 @@ import Foundation
 import SKState
 
 final class FakeCreateAquariumViewModel: CreateAquariumViewModelProtocol {
+    
+    
 
     // MARK: - Properties
 
@@ -18,6 +20,11 @@ final class FakeCreateAquariumViewModel: CreateAquariumViewModelProtocol {
     @Published private(set) var requestState: SKDataRequestState<String> = .idle
     var requestStatePublisher: SKDataRequestStatePublisher<String> {
         $requestState
+    }
+    
+    @Published private(set) var requestLocationState: SKDataRequestState<Void> = .idle
+    var requestLocationStatePublisher: SKDataRequestStatePublisher<Void> {
+        $requestLocationState
     }
 
     // MARK: - Init
@@ -27,6 +34,8 @@ final class FakeCreateAquariumViewModel: CreateAquariumViewModelProtocol {
     func createAquarium() async {
         requestState = .success("")
     }
+    
+    func requestLocation() {}
 }
 
 #endif

@@ -13,6 +13,7 @@ import SKLocalStorage
 protocol UserRemoteDataSourceProtocol: Sendable {
 
     func authApple(identityToken: String, email: String?) async throws
+    func refreshToken() async throws
     func postDeviceToken(token: String) async throws
 }
 
@@ -26,10 +27,11 @@ final class UserRemoteDataSource: UserRemoteDataSourceProtocol {
     enum Error: Swift.Error, LocalizedError {
         
         case noEmail
+        case noRefreshToken
         
         var errorDescription: String? {
             switch self {
-            case .noEmail:
+            case .noEmail, .noRefreshToken:
                 "Une erreur est survenue. Veuillez réessayer."
             }
         }
@@ -87,7 +89,21 @@ final class UserRemoteDataSource: UserRemoteDataSourceProtocol {
             
             let response = try await unauthenticatedAPI.authApple(identityToken: identityToken, email: newEmail)
             try await keychainStorage.setString(value: response.token, forKey: .accessToken)
+            try await keychainStorage.setString(value: response.refreshToken, forKey: .refreshToken)
+            try await keychainStorage.setString(value: response.expiresAt.formatted(.iso8601), forKey: .accessTokenExpirationDate)
+        }
+    }
+    
+    func refreshToken() async throws {
+        try await APIUtils.request("refreshToken", logger: logger) {
+            guard let refreshToken = try? await keychainStorage.getString(key: .refreshToken) else {
+                throw Error.noRefreshToken
+            }
             
+            let response = try await unauthenticatedAPI.authRefresh(refreshToken: refreshToken)
+            try await keychainStorage.setString(value: response.token, forKey: .accessToken)
+            try await keychainStorage.setString(value: response.refreshToken, forKey: .refreshToken)
+            try await keychainStorage.setString(value: response.expiresAt.formatted(.iso8601), forKey: .accessTokenExpirationDate)
         }
     }
     

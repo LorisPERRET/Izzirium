@@ -56,6 +56,7 @@ struct CreateAquariumView<ViewModel>: View where ViewModel: CreateAquariumViewMo
         .zzNavigationTitle(title: "Ajouter un aquarium")
         .padding(.mu100)
         .errorToast(publisher: viewModel.requestStatePublisher)
+        .errorToast(publisher: viewModel.requestLocationStatePublisher)
         .onReceive(viewModel.requestStatePublisher) { requestState in
             guard case let .success(token) = requestState else { return }
             pathNavigator.append(AnyZZScreen(AquariumScreen.configure(token)))

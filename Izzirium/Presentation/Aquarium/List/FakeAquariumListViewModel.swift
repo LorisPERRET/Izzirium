@@ -16,6 +16,10 @@ final class FakeAquariumListViewModel: AquariumListViewModelProtocol {
     
     @Published private(set) var dataListState: SKLoadingState<[AquariumUI]>
     @Published private(set) var dataFavoriteState: SKLoadingState<AquariumUI?>
+    @Published private(set) var deleteRequestState: SKDataRequestState<Void> = .idle
+    var deleteRequestStatePublisher: SKDataRequestStatePublisher<Void> {
+        $deleteRequestState
+    }
 
     // MARK: - Init
     
@@ -31,6 +35,7 @@ final class FakeAquariumListViewModel: AquariumListViewModelProtocol {
 
     func fetchAquariums() {}
     func fetchFavorite() {}
+    func deleteAquarium(id: Int) async {}
 }
 
 #endif

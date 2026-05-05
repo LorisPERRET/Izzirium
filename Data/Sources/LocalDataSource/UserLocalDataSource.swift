@@ -16,6 +16,7 @@ protocol UserLocalDataSourceProtocol: Sendable {
     func getUserId() async -> String?
     func setEmail(_ email: String?) async
     func getEmail() async -> String?
+    func getAccessTokenExpirationDate() async -> Date?
 }
 
 @InjectedMember(\.keychainStorage, protocol: (any KeychainStorageProtocol<KeychainStorageKey>).self)
@@ -63,6 +64,19 @@ final class UserLocalDataSource: UserLocalDataSourceProtocol {
     func getEmail() async -> String? {
         do {
             return try await keychainStorage.getString(key: .email)
+        } catch {
+            logger.error(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    func getAccessTokenExpirationDate() async -> Date? {
+        do {
+            guard let date = try await keychainStorage.getString(key: .accessTokenExpirationDate) else {
+                return nil
+            }
+            let formatter = ISO8601DateFormatter()
+            return formatter.date(from: date)
         } catch {
             logger.error(error.localizedDescription)
             return nil
