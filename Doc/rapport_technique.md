@@ -26,7 +26,7 @@ L'application utilise également plusieurs dépendances transverses. "SKDependen
 
 Le diagramme suivant résume l'architecture du projet.
 
-'''mermaid
+```mermaid
 flowchart TD
     App[IzziriumApp]
 
@@ -78,7 +78,7 @@ flowchart TD
     Domain -. utilise .-> ThirdParty
     Data -. utilise .-> ThirdParty
     BLE -. s'appuie sur .-> Apple
-'''
+```
 
 Dans la pratique, cette architecture apporte une bonne séparation des responsabilités. La couche de présentation reste centrée sur l'interface et l'expérience utilisateur. La couche de domaine contient les règles fonctionnelles, comme la vérification de session ou la logique de provisioning BLE. La couche de données regroupe les détails techniques, ce qui rend le projet plus lisible et plus facile à faire évoluer.
 
