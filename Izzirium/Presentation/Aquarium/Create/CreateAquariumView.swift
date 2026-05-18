@@ -53,6 +53,9 @@ struct CreateAquariumView<ViewModel>: View where ViewModel: CreateAquariumViewMo
 
             Spacer()
         }
+        .onAppear {
+            viewModel.requestLocation()
+        }
         .zzNavigationTitle(title: "Ajouter un aquarium")
         .padding(.mu100)
         .errorToast(publisher: viewModel.requestStatePublisher)

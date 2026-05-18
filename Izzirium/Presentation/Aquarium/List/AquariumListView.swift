@@ -78,7 +78,11 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
             .errorToast(publisher: viewModel.deleteRequestStatePublisher)
             .onReceive(viewModel.deleteRequestStatePublisher) { result in
                 guard case .success = result else { return }
-                showDeletePopup = false
+                Task {
+                    await viewModel.fetchAquariums()
+                    await viewModel.fetchFavorite()
+                    showDeletePopup = false
+                }
             }
         }
     }
