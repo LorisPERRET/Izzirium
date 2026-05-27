@@ -24,6 +24,10 @@ final class FakeAquariumAPI: AquariumAPI {
         AquariumDTO.Fake.list
     }
 
+    func getPrediction(aquarium id: Int) async throws -> PredictResponseDTO {
+        PredictResponseDTO(result: "Stable sur les prochaines 24 heures.")
+    }
+
     func createAquarium(name: String) async throws -> AquariumDTO {
         AquariumDTO(id: 0, name: name, secretSensorId: "azertyuiop")
     }

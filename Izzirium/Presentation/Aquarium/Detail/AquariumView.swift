@@ -30,7 +30,7 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
                 ProgressView()
 
             case .loaded(let datas):
-                content(logs: datas.logs, alert: datas.alert)
+                content(logs: datas.logs, alert: datas.alert, prediction: datas.prediction)
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button {
@@ -105,11 +105,15 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
     
     private func content(
         logs: [AquariumUI.LogUI],
-        alert: AlertUI?
+        alert: AlertUI?,
+        prediction: String?
     ) -> some View {
         VStack(spacing: MagicUnit.mu100.rawValue) {
             if let last = logs.last {
                 List {
+                    predictionCard(prediction)
+                        .listRowSeparator(.hidden)
+
                     ZZText("Dernière mesure faite le \(last.date.formatted())")
                         .listRowSeparator(.hidden)
                     
@@ -128,14 +132,49 @@ struct AquariumView<ViewModel>: View where ViewModel: AquariumViewModelProtocol 
                     }
                 }
             } else {
-                ZZText(
-                    "Aucune valeurs remontées",
-                    frameAlignment: .center
-                )
-                .expand(alignment: .center)
+                VStack(spacing: MagicUnit.mu100.rawValue) {
+                    predictionCard(prediction)
+
+                    ZZText(
+                        "Aucune valeurs remontées",
+                        frameAlignment: .center
+                    )
+                }
+                .expand(alignment: .top)
             }
         }
         .expand(alignment: .top)
+    }
+
+    private func predictionCard(_ prediction: String?) -> some View {
+        ZZCard(
+            bodyContent: {
+                VStack(alignment: .leading, spacing: MagicUnit.mu050.rawValue) {
+                    HStack(spacing: MagicUnit.mu050.rawValue) {
+                        Image(systemName: "sparkles")
+                            .renderingMode(.template)
+                            .foregroundStyle(Color.primaryMedium)
+
+                        ZZText("Prédiction", font: .h6)
+                    }
+
+                    ZZText(
+                        prediction?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
+                        ? prediction ?? ""
+                        : "Aucune prédiction disponible.",
+                        font: .textS,
+                        foregroundColor: Color.neutralLow
+                    )
+                }
+            },
+            action: nil
+        )
+        .background(
+            RoundedRectangle(cornerRadius: RadiusStyle.medium.rawValue)
+                .fill(Color.lightHightest)
+                .zzShadow(.small)
+        )
+        .padding(.horizontal, .mu0125)
     }
 
     private func cell(
@@ -306,7 +345,7 @@ import Data
 #Preview("Empty") {
     AquariumView(
         viewModel: FakeAquariumViewModel(
-            withState: .loaded(DataResponse(logs: [], alert: nil)),
+            withState: .loaded(DataResponse(logs: [], alert: nil, prediction: "Les paramètres devraient rester stables.")),
             aquarium: AquariumUI.Fake.preview,
             favorite: nil
         )
@@ -336,7 +375,8 @@ import Data
                         turbidityMax: 5,
                         temperatureMin: 22,
                         temperatureMax: 26
-                    )
+                    ),
+                    prediction: "Un risque de hausse de turbidité est détecté."
                 )
                 
             ),
@@ -369,7 +409,8 @@ import Data
                         turbidityMax: 5,
                         temperatureMin: 22,
                         temperatureMax: 26
-                    )
+                    ),
+                    prediction: "Un risque de hausse de turbidité est détecté."
                 )
                 
             ),
@@ -393,7 +434,8 @@ import Data
                             temperature: 1
                         )
                     ],
-                    alert: nil
+                    alert: nil,
+                    prediction: nil
                 )
                 
             ),

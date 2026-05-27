@@ -16,6 +16,7 @@ struct DataResponse {
     
     var logs: [AquariumUI.LogUI]
     var alert: AlertUI?
+    var prediction: String?
 }
 
 @MainActor
@@ -34,6 +35,7 @@ protocol AquariumViewModelProtocol: ObservableObject {
 
 @InjectedMember(\.getLogsUseCase)
 @InjectedMember(\.getAlertUseCase)
+@InjectedMember(\.getAquariumPredictionUseCase)
 @InjectedMember(\.getFavoriteAquariumUseCase)
 @InjectedMember(\.setFavoriteAquariumUseCase)
 final class AquariumViewModel: AquariumViewModelProtocol {
@@ -61,12 +63,14 @@ final class AquariumViewModel: AquariumViewModelProtocol {
         dataState = .loading
         
         do {
-            logger.info("getLogs")
-            let logs = try await getLogsUseCase.perform(aquarium: aquarium.id)
-            
-            logger.info("getAlert")
-            let alert = try await getAlertUseCase.perform(aquarium: aquarium.id)
-            
+            logger.info("getLogs/getAlert/getPrediction")
+            async let logsTask = getLogsUseCase.perform(aquarium: aquarium.id)
+            async let alertTask = getAlertUseCase.perform(aquarium: aquarium.id)
+            async let predictionTask = getAquariumPredictionUseCase.perform(aquarium: aquarium.id)
+            let logs = try await logsTask
+            let alert = try await alertTask
+            let prediction = try await predictionTask
+
             logger.info("getFavorite")
             let aquarium = await getFavoriteAquariumUseCase.perform()
             favorite = aquarium?.modelId
@@ -74,7 +78,8 @@ final class AquariumViewModel: AquariumViewModelProtocol {
             dataState = .loaded(
                 DataResponse(
                     logs: logs.map(LogUIAdapter.convert),
-                    alert: alert.map(AlertUIAdapter.convert)
+                    alert: alert.map(AlertUIAdapter.convert),
+                    prediction: prediction
                 )
             )
         } catch {

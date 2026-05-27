@@ -14,6 +14,7 @@ public protocol AquariumRepositoryProtocol: Sendable {
     func setFavorite(aquarium id: Int?) async
     func getFavoriteAquarium() async -> AquariumData?
     func getAquariums() async throws -> [AquariumData]
+    func getPrediction(aquarium id: Int) async throws -> String?
     func createAquarium(name: String) async throws -> AquariumData
     func deleteAquarium(id: Int) async throws
 }
@@ -38,6 +39,14 @@ final class AquariumRepository: AquariumRepositoryProtocol {
         let dtos = try await aquariumRemoteDataSource.fetchAquariums()
         aquariumLocalDataSource.saveAquariums(aquariums: dtos.map(AquariumAdapter.convert), deleteOther: true)
         return aquariumLocalDataSource.getAquariums()
+    }
+
+    func getPrediction(aquarium id: Int) async throws -> String? {
+        do {
+            return try await aquariumRemoteDataSource.fetchPrediction(aquarium: id).result
+        } catch {
+            return nil
+        }
     }
 
     func createAquarium(name: String) async throws -> AquariumData {

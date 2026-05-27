@@ -15,6 +15,7 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
     @StateObject private var viewModel: ViewModel
     @State private var navigationPath = [AnyZZScreen]()
     @State private var showDeletePopup = false
+    @State private var deleteAquarium: AquariumUI?
     
     // MARK: - Body
 
@@ -84,6 +85,25 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
                     showDeletePopup = false
                 }
             }
+            .applyIfLet(deleteAquarium) { view, aquarium in
+                view
+                    .zzPopup(
+                        isPresented: $showDeletePopup,
+                        title: "Voulez vous supprimez l'aquarium : \(aquarium.name)",
+                        buttons: {
+                            [
+                                ActionButton(title: "Annuler", type: .cancel, action: {
+                                    showDeletePopup = false
+                                }),
+                                ActionButton(title: "Confirmer", type: .destructive, action: {
+                                    Task {
+                                        await viewModel.deleteAquarium(id: aquarium.id)
+                                    }
+                                })
+                            ]
+                        }()
+                    )
+            }
         }
     }
     
@@ -131,27 +151,12 @@ struct AquariumListView<ViewModel>: View where ViewModel: AquariumListViewModelP
                     }
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
+                            deleteAquarium = aquarium
                             showDeletePopup = true
                         } label: {
                             Image(systemName: "trash")
                         }
                     }
-                    .zzPopup(
-                        isPresented: $showDeletePopup,
-                        title: "Voulez vous supprimez l'aquarium : \(aquarium.name)",
-                        buttons: {
-                            [
-                                ActionButton(title: "Annuler", type: .cancel, action: {
-                                    showDeletePopup = false
-                                }),
-                                ActionButton(title: "Confirmer", type: .destructive, action: {
-                                    Task {
-                                        await viewModel.deleteAquarium(id: aquarium.id)
-                                    }
-                                })
-                            ]
-                        }()
-                    )
                 }
             }
         case .failed(let error):

@@ -40,6 +40,9 @@ final class AquariumLocalDataSource: AquariumLocalDataSourceProtocol {
 
     func getAquariums() -> [AquariumData] {
         ZZDatabase.persistent.fetchAll(AquariumData.self)
+            .sorted(by: { item1, item2 in
+                item1.name > item2.name
+            })
     }
     
     func getAquarium(byId id: Int) throws -> AquariumData {

@@ -11,6 +11,7 @@ import SKDependencyInjection
 protocol AquariumRemoteDataSourceProtocol: Sendable {
 
     func fetchAquariums() async throws-> [AquariumDTO]
+    func fetchPrediction(aquarium id: Int) async throws -> PredictResponseDTO
     func createAquarium(name: String) async throws-> AquariumDTO
     func deleteAquarium(id: Int) async throws
 }
@@ -48,6 +49,12 @@ final class AquariumRemoteDataSource: AquariumRemoteDataSourceProtocol {
     func fetchAquariums() async throws -> [AquariumDTO] {
         try await APIUtils.request("fetchAquariums", logger: logger) {
             return try await api.getAquariums()
+        }
+    }
+
+    func fetchPrediction(aquarium id: Int) async throws -> PredictResponseDTO {
+        try await APIUtils.request("fetchPrediction", logger: logger) {
+            try await api.getPrediction(aquarium: id)
         }
     }
 

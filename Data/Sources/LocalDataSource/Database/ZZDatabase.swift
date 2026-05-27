@@ -90,6 +90,9 @@ public struct ZZDatabase {
 
     public func insert<T: PersistentModel>(_ object: T, deleteOther: Bool = false) {
         do {
+            if deleteOther {
+                try context.delete(model: T.self)
+            }
             try customInsert(object, deleteOther: deleteOther)
             try context.save()
         } catch {
@@ -99,6 +102,9 @@ public struct ZZDatabase {
 
     public func insertArray<T: PersistentModel>(_ objects: [T], deleteOther: Bool = false) {
         do {
+            if deleteOther {
+                try context.delete(model: T.self)
+            }
             for object in objects {
                 try customInsert(object, deleteOther: deleteOther)
             }
@@ -118,12 +124,8 @@ public struct ZZDatabase {
 
     private func customInsert<T: PersistentModel>(_ object: T, deleteOther: Bool) throws {
         do {
-            if deleteOther {
-                try context.delete(model: T.self)
-            } else {
-                if let aquarium = object as? AquariumData {
-                    try updateAquariumData(aquarium)
-                }
+            if let aquarium = object as? AquariumData {
+                try updateAquariumData(aquarium)
             }
         } catch {}
 
